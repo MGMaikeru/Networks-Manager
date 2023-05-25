@@ -7,12 +7,14 @@ public class Vertex1<T, K extends Comparable<K>> {
     private ArrayList<Edge> edges;
     private int color, dInit, dEnd;
     private Vertex1<T, K> predecessor;
+    private int distance;
 
 
     public Vertex1(T value, K key) {
         this.value = value;
         this.key = key;
         this.edges = new ArrayList<>();
+        this.distance = Integer.MAX_VALUE;
     }
 
     public T getValue() {
@@ -57,6 +59,10 @@ public class Vertex1<T, K extends Comparable<K>> {
 
     public void addEdge(Edge edge){
         this.edges.add(edge);
+    }
+
+    public ArrayList<Edge> getEdges() {
+        return edges;
     }
 
     public void removeEdge(Vertex1 destVertex){
