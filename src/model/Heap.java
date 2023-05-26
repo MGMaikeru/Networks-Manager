@@ -51,13 +51,13 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
     }
 
     @Override
-    public void heapIncreaseKey(int i, T key){
+    public void heapDecreaseKey(int i, T key){
         if (key.compareTo( array.get(i) ) < 0 ) {
             System.out.println("New key is smaller than current key");
         }
         array.set(i, key);
 
-        while (i > 0 && array.get( (int)father(i) ).compareTo(array.get(i)) < 0){
+        while (i > 0 && array.get( (int)father(i) ).compareTo(array.get(i)) > 0){
             Collections.swap(array, i, (int)father(i));
             i = (int)father(i);
         }
@@ -66,11 +66,11 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
     @Override
     public void minHeapInsert(T key){
         array.add(key);
-        heapIncreaseKey(array.size()-1, key);
+        heapDecreaseKey(array.size()-1, key);
     }
 
     public void heapSort(){
-        buildMaxHeap();
+        buildMinHeap();
         for (int i = array.size(); i>=1; i--) {
             Collections.swap(array, 0, i - 1);
             reduceHeapSize();
@@ -78,7 +78,7 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
         }
     }
 
-    public void buildMaxHeap(){
+    public void buildMinHeap(){
         this.heapSize = array.size()-1;
         for (int i = (int)Math.floor(array.size()/2); i>=1; i--){
             minHeapify(i-1);
