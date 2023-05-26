@@ -51,13 +51,13 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
     }
 
     @Override
-    public void heapIncreaseKey(int i, T key){
-        if (key.compareTo( array.get(i) ) < 0 ) {
-            System.out.println("New key is smaller than current key");
+    public void heapDecreaseKey(int i, T key){
+        if (key.compareTo( array.get(i) ) > 0 ) {//Edited
+            System.out.println("New key is greater than current key");
         }
         array.set(i, key);
 
-        while (i > 0 && array.get( (int)father(i) ).compareTo(array.get(i)) < 0){
+        while (i > 0 && array.get( (int)father(i) ).compareTo(array.get(i)) > 0){//Edited
             Collections.swap(array, i, (int)father(i));
             i = (int)father(i);
         }
@@ -66,11 +66,11 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
     @Override
     public void minHeapInsert(T key){
         array.add(key);
-        heapIncreaseKey(array.size()-1, key);
+        heapDecreaseKey(array.size()-1, key);
     }
 
     public void heapSort(){
-        buildMaxHeap();
+        buildMinHeap();
         for (int i = array.size(); i>=1; i--) {
             Collections.swap(array, 0, i - 1);
             reduceHeapSize();
@@ -78,10 +78,10 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
         }
     }
 
-    public void buildMaxHeap(){
+    public void buildMinHeap(){
         this.heapSize = array.size()-1;
-        for (int i = (int)Math.floor(array.size()/2); i>=1; i--){
-            minHeapify(i-1);
+        for (int i = (int)Math.floor(array.size()/2); i>=0; i--){//Edited
+            minHeapify(i);//Edited
         }
     }
 
@@ -92,7 +92,7 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
     public void minHeapify(int index){
         int l = left(index);
         int r = right(index);
-        int shortest = 0;
+        int shortest;
 
         if (l >= heapSize && array.get(l).compareTo(array.get(index))< 0) {
             shortest = l;
@@ -136,6 +136,5 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
     public double father(int index){
         return Math.floor(index/2);
     }
-
 
 }
