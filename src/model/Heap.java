@@ -71,7 +71,7 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
 
     public void heapSort(){
         buildMinHeap();
-        for (int i = array.size(); i>=1; i--) {
+        for (int i = array.size(); i > 1; i--) {
             Collections.swap(array, 0, i - 1);
             reduceHeapSize();
             minHeapify(0);
@@ -80,8 +80,8 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
 
     public void buildMinHeap(){
         this.heapSize = array.size()-1;
-        for (int i = (int)Math.floor(array.size()/2); i>=0; i--){//Edited
-            minHeapify(i);//Edited
+        for (int i = (int)Math.floor(array.size()/2); i > 0; i--){//Edited
+            minHeapify(i - 1);//Edited
         }
     }
 
@@ -94,13 +94,13 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
         int r = right(index);
         int shortest;
 
-        if (l >= heapSize && array.get(l).compareTo(array.get(index))< 0) {
+        if (l <= heapSize && array.get(l).compareTo(array.get(index)) < 0) {
             shortest = l;
         }else{
             shortest = index;
         }
 
-        if (r >= heapSize && array.get(r).compareTo(array.get(shortest))< 0) {
+        if (r <= heapSize && array.get(r).compareTo(array.get(shortest))< 0) {
             shortest = r;
         }
         if (shortest != index) {
