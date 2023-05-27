@@ -4,6 +4,8 @@ package model;
 import exception.EmptyFieldException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class GraphForMatrix <T, K extends Comparable<K>>{
     private int numVertices;
@@ -35,17 +37,17 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
         adjMatrix = newAdjMatrix;
     }
 
-    public void addEdge(K srcKey, K destKey) {
+    public void addEdge(K srcKey, K destKey, double weight) {
         int srcIdx = searchVertex(srcKey);
         int destIdx = searchVertex(destKey);
 
         if (srcIdx != -1 && destIdx != -1) {
             Vertex1<T, K> srcVertex = vertices.get(srcIdx);
             Vertex1<T, K> destVertex = vertices.get(destIdx);
-            srcVertex.addEdge(new Edge(srcVertex, destVertex, 1));
+            srcVertex.addEdge(new Edge(srcVertex, destVertex, weight));
 
             if (isDirected){
-                destVertex.addEdge(new Edge(srcVertex, destVertex, 1));
+                destVertex.addEdge(new Edge(srcVertex, destVertex, weight));
             }
             adjMatrix[srcIdx][destIdx] = 1;
             adjMatrix[destIdx][srcIdx] = 1;
@@ -170,10 +172,80 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
         }
     }
 
-    public void dijkstra(K key){
+    /*public void dijkstra(K key){
+        ArrayList<Double> dist = new ArrayList<>();
+        ArrayList<String> prev = new ArrayList<>();
         int index = searchVertex(key);
-        vertices.get(index);
+        Vertex1<T, K> source = vertices.get(index);
+        source.setDistance(0);
+        Heap queue = new Heap();
 
+        for (Vertex1<T, K> vertex: vertices) {
+            if (!vertex.equals(source)){
+                vertex.setDistance(Double.MAX_VALUE);
+            }
+            vertex.setPredecessor(null);
+            queue.minHeapInsert(vertex);
+        }
+        System.out.println(queue.printArray());
+        while (!queue.isEmpty()){
+            Vertex1<T, K> u = (Vertex1<T, K>) (queue.heapExtractMin());
+            for (Edge edge: u.getEdges()) {
+                double alt = u.getDistance() + edge.getWeight();
+                if (alt < edge.getFinalVertex().getDistance()){
+                    edge.getFinalVertex().setDistance(alt);
+                    edge.getFinalVertex().setPredecessor(u);
+                    queue.minHeapify(0);
+                }
+            }
+        }
+
+        for (Vertex1 vertex:vertices) {
+            System.out.println(vertex.getValue() + "Distance: " + vertex.getDistance());
+        }
+
+    }*/
+
+    public void dijkstra(K startKey) {
+        int startIdx = searchVertex(startKey);
+
+        if (startIdx == -1) {
+            System.out.println("The start vertex does not exist in the graph.");
+            return;
+        }
+
+        double[] distances = new double[numVertices];
+        Arrays.fill(distances, Integer.MAX_VALUE);
+        distances[startIdx] = 0;
+
+        PriorityQueue<Vertex1<T, K>> queue = new PriorityQueue<>((v1, v2) -> (int) (distances[vertices.indexOf(v1)] - distances[vertices.indexOf(v2)]));
+        queue.add(vertices.get(startIdx));
+
+        while (!queue.isEmpty()) {
+            Vertex1<T, K> current = queue.poll();
+
+            for (Edge edge : current.getEdges()) {
+                Vertex1<T, K> neighbor = edge.getFinalVertex();
+                int neighborIdx = vertices.indexOf(neighbor);
+                double weight = edge.getWeight();
+
+                double newDistance = distances[startIdx] + weight;
+                if (newDistance < distances[neighborIdx]) {
+                    distances[neighborIdx] = newDistance;
+                    neighbor.setPredecessor(current);
+
+                    // Update the priority of the neighbor in the priority queue
+                    queue.remove(neighbor);
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        // Print the shortest distances from the start vertex to all other vertices
+        System.out.println("Shortest distances from vertex " + startKey + ":");
+        for (int i = 0; i < numVertices; i++) {
+            System.out.println(vertices.get(i).getKey() + ": " + distances[i]);
+        }
     }
 
 }

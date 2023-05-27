@@ -1,38 +1,41 @@
 import exception.EmptyFieldException;
-import model.Edge;
-import model.GraphForMatrix;
-import model.GraphList;
-import model.Vertex1;
+import model.*;
 
 public class Main {
     private GraphList graph;
     private GraphForMatrix graph2;
+    private Heap<Integer> priorityQueue;
     private Vertex1[] vertices;
     public Main(){
         graph = new GraphList(true);
         graph2 = new GraphForMatrix<>(false);
+        priorityQueue = new Heap<>();
     }
 
     public static void main(String[] args) {
         Main m = new Main();
-        m.graph2.addVertex(0, 0);
-        m.graph2.addVertex(1, 1);
-        m.graph2.addVertex(2, 2);
-        m.graph2.addVertex(3, 3);
-        m.graph2.addVertex(4, 4);
-        m.graph2.addVertex(5, 5);
-        m.graph2.addVertex(6, 6);
-        m.graph2.addVertex(7, 7);
-        m.graph2.addEdge(1 , 2);;
-        m.graph2.addEdge(0 , 1);
-        m.graph2.addEdge(0 , 2);
-        m.graph2.addEdge(0 , 3);
-        m.graph2.addEdge(2, 4);
-        m.graph2.addEdge(2, 6);
-        m.graph2.addEdge(4, 6);
-        m.graph2.addEdge(4, 7);
-        m.graph2.addEdge(5, 7);
-        m.graph2.addEdge(6, 7);
-        m.graph2.printGraph();
+        m.graph2.addVertex("a", "a");
+        m.graph2.addVertex("b", "b");
+        m.graph2.addVertex("c", "c");
+        m.graph2.addVertex("d", "d");
+        m.graph2.addVertex("e", "e");
+        m.graph2.addVertex("z", "z");
+        m.graph2.addEdge("a", "c", 2);
+        m.graph2.addEdge("c", "b", 1);
+        m.graph2.addEdge("d", "e", 2);
+        m.graph2.addEdge("c", "d", 8);
+        m.graph2.addEdge("e", "z", 3);
+        m.graph2.addEdge("a", "b", 4);
+        m.graph2.addEdge("a", "d", 5);
+        m.graph2.addEdge("d", "z", 6);
+        m.graph2.addEdge("c", "e", 10);
+        //m.graph2.printGraph();
+        m.graph2.dijkstra("a");
+        /*m.priorityQueue.minHeapInsert(4);
+        m.priorityQueue.minHeapInsert(2);
+        m.priorityQueue.minHeapInsert(7);
+        m.priorityQueue.minHeapInsert(5);
+        m.priorityQueue.minHeapInsert(1);
+        System.out.println(m.priorityQueue.printArray());*/
     }
 }

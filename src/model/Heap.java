@@ -21,6 +21,10 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
         return array.get(0);
     }*/
 
+    public boolean isEmpty(){
+        return array.isEmpty();
+    }
+
     @Override
     public T heapMinimum(){
         return array.get(0);
