@@ -75,7 +75,7 @@ public class Vertex1<T, K extends Comparable<K>> implements Comparable<Vertex1> 
 
     public void removeEdge(Vertex1 destVertex){
         for (int i = 0; i <edges.size(); i++){
-            if (edges.get(i).getFinalVertex().equals(destVertex)){
+            if (edges.get(i).getDestinationVertex().equals(destVertex)){
                 edges.remove(i);
             }
         }

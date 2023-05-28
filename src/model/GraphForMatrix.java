@@ -108,7 +108,7 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
             Vertex1<T, K> u = queue.dequeue();
 
             for (Edge e: u.getEdges()) {
-                Vertex1<T, K> v = e.getFinalVertex();
+                Vertex1<T, K> v = e.getDestinationVertex();
                 if (v.getColor() == 0) {
                     v.setColor(1);
                     v.setDInit(u.getDInit() + 1);
@@ -144,7 +144,7 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
         vertex.setDInit(time);
         vertex.setColor(1);
         for (Edge edge: vertex.getEdges()) {
-            Vertex1<T, K> v = edge.getFinalVertex();
+            Vertex1<T, K> v = edge.getDestinationVertex();
             if (v.getColor() == 0) {
                 v.setPredecessor(vertex);
                 dfs(v);
@@ -225,7 +225,7 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
             Vertex1<T, K> current = queue.poll();
 
             for (Edge edge : current.getEdges()) {
-                Vertex1<T, K> neighbor = edge.getFinalVertex();
+                Vertex1<T, K> neighbor = edge.getDestinationVertex();
                 int neighborIdx = vertices.indexOf(neighbor);
                 double weight = edge.getWeight();
 

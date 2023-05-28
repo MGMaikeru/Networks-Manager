@@ -17,54 +17,54 @@ public class GraphListTest {
 
     @Test
     public void verifyEdgeConnection1(){
-        //Se intenta agregar una arista que ya existe
+        //The adjacency of the edge in a directed graph is checked.
         setup1();
         graphList.addVertex(1);
         graphList.addVertex(2);
         graphList.addVertex(3);
-        graphList.addEdge(1, 2);
-        graphList.addEdge(1, 3);
-        graphList.addEdge(3, 2);
-        assertEquals("Estos vertices ya estan conectados", graphList.addEdge(1, 2));
+        graphList.addEdge(1, 2, 3);
+        graphList.addEdge(1, 3, 5);
+        graphList.addEdge(3, 2, 1);
+        assertEquals("These vertexes are already connected", graphList.addEdge(1, 2, 3));
     }
 
     @Test
     public void verifyEdgeConnection2(){
-        //Se comprueba que la adyacencia de la arista en un grafo dirgido
+        //The adjacency of the edge in a directed graph is checked.
         setup2();
         graphList.addVertex(1);
         graphList.addVertex(2);
         graphList.addVertex(3);
-        graphList.addEdge(1, 2);
-        graphList.addEdge(1, 3);
-        graphList.addEdge(3, 2);
+        graphList.addEdge(1, 2, 1);
+        graphList.addEdge(1, 3, 2);
+        graphList.addEdge(3, 2, 3);
         assertTrue(graphList.searchSpecificAdjacent(1, 2));
         assertFalse(graphList.searchSpecificAdjacent(2, 1));
     }
 
     @Test
     public void verifyEdgeConnection3(){
-        //Se intenta agregar un bucle en un grafo no dirigido
+        //Trying to add a loop in an undirected graph
         setup1();
         graphList.addVertex(1);
         graphList.addVertex(2);
         graphList.addVertex(3);
-        graphList.addEdge(1, 2);
-        graphList.addEdge(1, 3);
-        graphList.addEdge(3, 2);
-        assertEquals("No se puede añadir un bucle en un grafo no digido!", graphList.addEdge(1, 1));
+        graphList.addEdge(1, 2, 4);
+        graphList.addEdge(1, 3, 6);
+        graphList.addEdge(3, 2, 1);
+        assertEquals("You cannot add a loop in an undirected graph!", graphList.addEdge(1, 1, 3));
     }
 
     @Test
     public void verifyAdjacent1(){
-        //Se comprueba que las conexiones de el grafo dirigido sean correctas
+        //Directed graph connections are checked for correctness
         setup2();
         graphList.addVertex(1);
         graphList.addVertex(2);
         graphList.addVertex(3);
-        graphList.addEdge(1, 2);
-        graphList.addEdge(2, 3);
-        graphList.addEdge(3, 1);
+        graphList.addEdge(1, 2, 8);
+        graphList.addEdge(2, 3, 1);
+        graphList.addEdge(3, 1, 2);
         assertEquals(2, graphList.getAdjacent(1).get(0));
         assertEquals(3, graphList.getAdjacent(2).get(0));
         assertEquals(1, graphList.getAdjacent(3).get(0));
@@ -72,35 +72,35 @@ public class GraphListTest {
 
     @Test
     public void verifyAdjacent2(){
-        //Se comprueba la adyacencia de un vertice aislado
+        //Adjacency of a single vertex is checked
         setup1();
         graphList.addVertex(1);
         graphList.addVertex(2);
         graphList.addVertex(3);
         graphList.addVertex(4);
-        graphList.addEdge(1, 2);
-        graphList.addEdge(1, 3);
-        graphList.addEdge(2, 3);
+        graphList.addEdge(1, 2, 0);
+        graphList.addEdge(1, 3, 1);
+        graphList.addEdge(2, 3,4 );
         assertTrue(graphList.getAdjacent(4).isEmpty());
 
     }
 
     @Test
     public void verifyAdjacent3(){
-        //Un nodo que no existe en el grafo. Verifica que el método retorne null.
+        //A node that does not exist in the graph. Verify that the method returns null.
         setup1();
         graphList.addVertex(1);
         graphList.addVertex(2);
         graphList.addVertex(3);
-        graphList.addEdge(1, 2);
-        graphList.addEdge(1, 3);
-        graphList.addEdge(2, 3);
+        graphList.addEdge(1, 2, 3);
+        graphList.addEdge(1, 3, 1);
+        graphList.addEdge(2, 3, 2);
         assertNull(graphList.getAdjacent(4));
     }
 
     @Test
     public void bsfTest1(){
-        //Se verifica que las distancias respecto a I correspondan al grafo
+        // It is verified that the distances with respect to I correspond to the graph.
         setup1();
         graphList.addVertex("A");
         graphList.addVertex("B");
@@ -112,17 +112,17 @@ public class GraphListTest {
         graphList.addVertex("H");
         graphList.addVertex("I");
         graphList.addVertex("J");
-        graphList.addEdge("A", "C");
-        graphList.addEdge("E", "A");
-        graphList.addEdge("I", "E");
-        graphList.addEdge("I", "B");
-        graphList.addEdge("E", "J");
-        graphList.addEdge("J", "G");
-        graphList.addEdge("G", "C");
-        graphList.addEdge("C", "F");
-        graphList.addEdge("C", "D");
-        graphList.addEdge("F", "D");
-        graphList.addEdge("D", "H");
+        graphList.addEdge("A", "C", 5);
+        graphList.addEdge("E", "A", 1);
+        graphList.addEdge("I", "E", 7);
+        graphList.addEdge("I", "B", 4);
+        graphList.addEdge("E", "J", 1);
+        graphList.addEdge("J", "G", 12);
+        graphList.addEdge("G", "C", 6);
+        graphList.addEdge("C", "F", 9);
+        graphList.addEdge("C", "D", 11);
+        graphList.addEdge("F", "D", 17);
+        graphList.addEdge("D", "H", 10);
         String expected = "A 2 away.\n" +
                 "B 1 away.\n" +
                 "C 3 away.\n" +
@@ -142,7 +142,7 @@ public class GraphListTest {
 
     @Test
     public void bsfTest2(){
-        //Se tiene un grafo sin conexiones, se espera que la discancias entre los vertices sea 0
+        // A graph with no connections, the distance between vertices is expected to be 0.
         setup1();
         graphList.addVertex("A");
         graphList.addVertex("B");
@@ -169,7 +169,7 @@ public class GraphListTest {
 
     @Test
     public void bsfTest3(){
-        //Se inica el bsf con un valor que no esta en el grafo
+        //BSF is started with a value that is not in the network
         setup2();
         graphList.addVertex("A");
         graphList.addVertex("B");
@@ -179,9 +179,9 @@ public class GraphListTest {
         graphList.addVertex("F");
         graphList.addVertex("G");
         graphList.addVertex("H");
-        graphList.addEdge("G", "A");
-        graphList.addEdge("C", "D");
-        graphList.addEdge("E", "H");
+        graphList.addEdge("G", "A", 3);
+        graphList.addEdge("C", "D", 2);
+        graphList.addEdge("E", "H", 1);
         try {
             assertEquals("This value don't exist in the graph", graphList.bfs("z"));
         } catch (EmptyFieldException e) {
@@ -191,7 +191,7 @@ public class GraphListTest {
 
     @Test
     public void dsfTest1(){
-        //Se verifica que las distancias respecto a I correspondan al grafo
+        //It is verified that the distances with respect to I correspond to the graph.
         setup2();
         graphList.addVertex("O");
         graphList.addVertex("P");
@@ -205,19 +205,19 @@ public class GraphListTest {
         graphList.addVertex("X");
         graphList.addVertex("Y");
         graphList.addVertex("Z");
-        graphList.addEdge("P", "Q");
-        graphList.addEdge("Q", "W");
-        graphList.addEdge("W", "P");
-        graphList.addEdge("O", "Y");
-        graphList.addEdge("O", "T");
-        graphList.addEdge("O", "S");
-        graphList.addEdge("Y", "T");
-        graphList.addEdge("T", "X");
-        graphList.addEdge("X", "S");
-        graphList.addEdge("R", "X");
-        graphList.addEdge("R", "Z");
-        graphList.addEdge("V", "S");
-        graphList.addEdge("V", "R");
+        graphList.addEdge("P", "Q", 1);
+        graphList.addEdge("Q", "W", 2);
+        graphList.addEdge("W", "P", 3);
+        graphList.addEdge("O", "Y", 4);
+        graphList.addEdge("O", "T", 5);
+        graphList.addEdge("O", "S", 6);
+        graphList.addEdge("Y", "T", 7);
+        graphList.addEdge("T", "X", 8);
+        graphList.addEdge("X", "S", 9);
+        graphList.addEdge("R", "X", 10);
+        graphList.addEdge("R", "Z", 11);
+        graphList.addEdge("V", "S", 12);
+        graphList.addEdge("V", "R", 13);
         String expected = "O d: 1 f: 10\n" + "P d: 11 f: 16\n" + "Q d: 12 f: 15\n" +
                 "R d: 17 f: 20\n" + "S d: 5 f: 6\n" + "T d: 3 f: 8\n" + "U d: 21 f: 22\n" +
                 "V d: 23 f: 24\n" + "W d: 13 f: 14\n" + "X d: 4 f: 7\n" + "Y d: 2 f: 9\n" +
@@ -229,7 +229,7 @@ public class GraphListTest {
 
     @Test
     public void dsfTest2(){
-        //Se tiene un grafo sin conexiones, se espera que D y F aumenten en 1 en cada vertice
+        //We have a graph with no connections, D and F are expected to increase by 1 at each vertex.
         setup2();
         graphList.addVertex("A");
         graphList.addVertex("B");
@@ -247,7 +247,7 @@ public class GraphListTest {
 
     @Test
     public void dsfTest3(){
-        //Se usa un grafo dirigido ciclico, se comprueba que los D y F de cada vertice lo demuestren
+        //Cyclic directed graph is used, check that the D and F of each vertex prove it.
         setup2();
         graphList.addVertex("A");
         graphList.addVertex("B");
@@ -256,12 +256,12 @@ public class GraphListTest {
         graphList.addVertex("E");
         graphList.addVertex("F");
 
-        graphList.addEdge("A", "B");
-        graphList.addEdge("B", "C");
-        graphList.addEdge("C", "D");
-        graphList.addEdge("D", "E");
-        graphList.addEdge("E", "F");
-        graphList.addEdge("F", "A");
+        graphList.addEdge("A", "B", 1);
+        graphList.addEdge("B", "C", 2);
+        graphList.addEdge("C", "D", 3);
+        graphList.addEdge("D", "E", 4);
+        graphList.addEdge("E", "F", 5);
+        graphList.addEdge("F", "A", 6);
         String expected = "A d: 1 f: 12\n" + "B d: 2 f: 11\n" + "C d: 3 f: 10\n" + "D d: 4 f: 9\n" +
                 "E d: 5 f: 8\n" + "F d: 6 f: 7\n";
         graphList.dfs();

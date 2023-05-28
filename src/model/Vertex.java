@@ -4,13 +4,14 @@ public class Vertex<T extends Comparable<T>> {
 
     private T value;
     private ArrayList<Vertex<T>> adjacentVertices;
+    private ArrayList<Edge<T>> edges;
     private int color, dInit, dEnd;
     private Vertex<T> predecessor;
-
 
     public Vertex(T value) {
         this.value = value;
         this.adjacentVertices = new ArrayList<>();
+        this.edges = new ArrayList<>();
     }
 
     public T getValue() {
@@ -49,9 +50,10 @@ public class Vertex<T extends Comparable<T>> {
         this.predecessor = predecessor;
     }
 
-    public boolean addAdjacent(Vertex<T> vertex){
+    public boolean addAdjacent(Vertex<T> vertex, double weight){
         if (!searchAdjacent(vertex)){
             adjacentVertices.add(vertex);
+            edges.add(new Edge<>(this, vertex, weight));
             return true;
         }
         return false;
@@ -68,6 +70,10 @@ public class Vertex<T extends Comparable<T>> {
 
     public ArrayList<Vertex<T>> getAdjacentVertices() {
         return adjacentVertices;
+    }
+
+    public ArrayList<Edge<T>> getEdges() {
+        return edges;
     }
 
     public void addConnection(Vertex<T> vertex){
