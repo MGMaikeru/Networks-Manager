@@ -185,4 +185,72 @@
             }
         }
 
+
+        public void prim(T startKey) {
+            Vertex<T> startVertex = searchVertex(startKey);
+
+            if (startVertex == null) {
+                System.out.println("The start vertex does not exist in the graph.");
+                return;
+            }
+
+            int numVertices = vertices.size();
+            boolean[] visited = new boolean[numVertices];
+            double[] key = new double[numVertices];
+            Arrays.fill(key, Double.MAX_VALUE);
+            key[vertices.indexOf(startVertex)] = 0.0;
+
+            int[] pred = new int[numVertices];
+            Arrays.fill(pred, -1);
+
+            double totalCost = 0.0;
+
+            for (int i = 0; i < numVertices; i++) {
+                int uIdx = findMinKeyVertex(key, visited);
+                if (uIdx == -1) {
+                    break;
+                }
+
+                visited[uIdx] = true;
+                Vertex<T> u = vertices.get(uIdx);
+
+                for (Edge<T> edge : u.getEdges()) {
+                    Vertex<T> v = edge.getFinalVertex();
+                    int vIdx = vertices.indexOf(v);
+
+                    double weight = edge.getWeight();
+
+                    if (!visited[vIdx] && weight < key[vIdx]) {
+                        key[vIdx] = weight;
+                        pred[vIdx] = uIdx;
+                    }
+                }
+            }
+
+            System.out.println("Minimum Spanning Tree:");
+            for (int i = 0; i < numVertices; i++) {
+                if (pred[i] != -1) {
+                    Vertex<T> u = vertices.get(pred[i]);
+                    Vertex<T> v = vertices.get(i);
+
+                    System.out.println(u.getValue() + " goes to " + v.getValue() + " : " + key[i]);
+                    totalCost += key[i];
+                }
+            }
+
+            System.out.println("Total: " + totalCost);
+        }
+        private int findMinKeyVertex(double[] key, boolean[] visited) {
+            double minKey = Integer.MAX_VALUE;
+            int minIdx = -1;
+
+            for (int i = 0; i < vertices.size(); i++) {
+                if (!visited[i] && key[i] < minKey) {
+                    minKey = key[i];
+                    minIdx = i;
+                }
+            }
+
+            return minIdx;
+        }
     }

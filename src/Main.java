@@ -4,12 +4,14 @@ import model.*;
 public class Main {
     private GraphList graph;
     private GraphForMatrix graph2;
+    private GraphForMatrix graph3;
     private Heap<Integer> priorityQueue;
     private Vertex1[] vertices;
     public Main(){
         graph = new GraphList(true);
         graph2 = new GraphForMatrix<>(false);
         priorityQueue = new Heap<>();
+        graph3 = new GraphForMatrix<>(false);
     }
 
     public static void main(String[] args) {
@@ -19,17 +21,15 @@ public class Main {
         m.graph2.addVertex("c", "c");
         m.graph2.addVertex("d", "d");
         m.graph2.addVertex("e", "e");
-        m.graph2.addVertex("z", "z");
-        m.graph2.addEdge("a", "c", 2);
-        m.graph2.addEdge("c", "b", 1);
-        m.graph2.addEdge("d", "e", 2);
-        m.graph2.addEdge("c", "d", 8);
-        m.graph2.addEdge("e", "z", 3);
-        m.graph2.addEdge("a", "b", 4);
-        m.graph2.addEdge("a", "d", 5);
-        m.graph2.addEdge("d", "z", 6);
-        m.graph2.addEdge("c", "e", 10);
-        m.graph2.dijkstra("a");
+        m.graph2.addEdge("b", "c", 10);
+        m.graph2.addEdge("c", "a", 3);
+        m.graph2.addEdge("b", "d", 4);
+        m.graph2.addEdge("d", "c", 2);
+        m.graph2.addEdge("d", "e", 1);
+        m.graph2.addEdge("e", "c", 6);
+        m.graph2.dijkstra("b");
+        m.graph2.prim("b");
+        System.out.println("");
         /*m.priorityQueue.minHeapInsert(4);
         m.priorityQueue.minHeapInsert(2);
         m.priorityQueue.minHeapInsert(7);
@@ -54,6 +54,8 @@ public class Main {
         m.graph.addEdge("d", "z", 6);
         m.graph.addEdge("c", "e", 10);
         m.graph.dijkstra("a");
+        m.graph.prim("a");
         //m.graph2.printGraph();
+
     }
 }

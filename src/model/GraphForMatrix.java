@@ -248,4 +248,125 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
         }
     }
 
+    /*public void  prim(K startKey){
+        int startIdx = searchVertex(startKey);
+
+        if (startIdx == -1) {
+            System.out.println("The start vertex does not exist in the graph.");
+            return;
+        }
+        double[] key = new double[numVertices];
+        Arrays.fill(key, Integer.MAX_VALUE);
+        key[startIdx] = 0;
+
+        int[] pred = new int[numVertices];
+        Arrays.fill(pred, -1);
+
+        PriorityQueue<Vertex1<T, K>> queue = new PriorityQueue<>((v1, v2) -> (int) (key[vertices.indexOf(v1)] - key[vertices.indexOf(v2)]));
+        queue.add(vertices.get(startIdx));
+
+        while (!queue.isEmpty()) {
+            Vertex1<T, K> u = queue.poll();
+
+            int uIdx = vertices.indexOf(u);
+
+            for (Edge edge : u.getEdges()) {
+                Vertex1<T, K> v = edge.getDestinationVertex();
+                int vIdx = vertices.indexOf(v);
+
+                double weight = edge.getWeight();
+
+                if (vIdx != -1 && weight < key[vIdx]) {
+                    key[vIdx] = weight;
+                    pred[vIdx] = uIdx;
+
+                    // Update the priority of the neighbor in the priority queue
+                    queue.remove(v);
+                    queue.add(v);
+                }
+            }
+        }
+
+        // Print the minimum spanning tree
+        System.out.println("Minimum Spanning Tree:");
+        for (int i = 0; i < numVertices; i++) {
+            if (pred[i] != -1) {
+                Vertex1<T, K> u = vertices.get(pred[i]);
+                Vertex1<T, K> v = vertices.get(i);
+
+                System.out.println(u.getValue() + " goes to " + v.getValue() + " : " + key[i]);
+            }
+        }
+    }*/
+    public void prim(K startKey) {
+        int startIdx = searchVertex(startKey);
+
+        if (startIdx == -1) {
+            System.out.println("The start vertex does not exist in the graph.");
+        }
+
+        boolean[] visited = new boolean[numVertices];
+        double[] key = new double[numVertices];
+        Arrays.fill(key, Integer.MAX_VALUE);
+        key[startIdx] = 0;
+
+        int[] pred = new int[numVertices];
+        Arrays.fill(pred, -1);
+
+        double totalCost = 0.0;
+
+        for (int i = 0; i < numVertices; i++) {
+            int uIdx = findMinKeyVertex(key, visited);
+            if (uIdx == -1) {
+                break;
+            }
+
+            visited[uIdx] = true;
+
+            for (Edge edge : vertices.get(uIdx).getEdges()) {
+                Vertex1<T, K> v = edge.getDestinationVertex();
+                int vIdx = vertices.indexOf(v);
+
+                double weight = edge.getWeight();
+
+                if (!visited[vIdx] && weight < key[vIdx]) {
+                    key[vIdx] = weight;
+                    pred[vIdx] = uIdx;
+                }
+            }
+        }
+
+        System.out.println("Minimum Spanning Tree:");
+        for (int i = 0; i < numVertices; i++) {
+            if (pred[i] != -1) {
+                Vertex1<T, K> u = vertices.get(pred[i]);
+                Vertex1<T, K> v = vertices.get(i);
+
+                System.out.println(u.getValue() + " goes to " + v.getValue() + " : " + key[i]);
+            }
+        }
+
+        for (double cost : key) {
+            if (cost != Integer.MAX_VALUE) {
+                totalCost += cost;
+            }
+        }
+
+        System.out.println("Total: " + totalCost);
+    }
+
+    private int findMinKeyVertex(double[] key, boolean[] visited) {
+        double minKey = Integer.MAX_VALUE;
+        int minIdx = -1;
+
+        for (int i = 0; i < numVertices; i++) {
+            if (!visited[i] && key[i] < minKey) {
+                minKey = key[i];
+                minIdx = i;
+            }
+        }
+
+        return minIdx;
+    }
+
 }
