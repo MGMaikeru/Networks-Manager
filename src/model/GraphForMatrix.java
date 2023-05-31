@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 
-public class GraphForMatrix <T, K extends Comparable<K>>{
+public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
     private int numVertices;
     private int[][] adjMatrix;
     private ArrayList<Vertex1<T, K>> vertices;
@@ -22,6 +22,7 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
 
     }
 
+    @Override
     public void addVertex(K key, T value) {
         Vertex1<T, K> vertex = new Vertex1<T, K>(value, key);
         int newIndex = vertices.size();
@@ -81,7 +82,8 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
         }
     }
 
-    public void printGraph() {
+    @Override
+    public void getAdjacent() {
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
                 System.out.print(adjMatrix[i][j] + " ");
@@ -163,15 +165,6 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
         return msg;
     }
 
-    public void floyd(){
-        int[][] floydMatrix = new int[numVertices][numVertices];
-        for (int i = 0; i<numVertices; i++){
-            for (int j = 0; i<numVertices; i++){
-                floydMatrix[i][j] = Integer.MAX_VALUE;
-            }
-        }
-    }
-
     /*public void dijkstra(K key){
         ArrayList<Double> dist = new ArrayList<>();
         ArrayList<String> prev = new ArrayList<>();
@@ -206,6 +199,7 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
 
     }*/
 
+    @Override
     public void dijkstra(K startKey) {
         int startIdx = searchVertex(startKey);
 
@@ -261,7 +255,7 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
 
         int[] pred = new int[numVertices];
         Arrays.fill(pred, -1);
-
+public abstract String bfs(K key) throws EmptyFieldException;
         PriorityQueue<Vertex1<T, K>> queue = new PriorityQueue<>((v1, v2) -> (int) (key[vertices.indexOf(v1)] - key[vertices.indexOf(v2)]));
         queue.add(vertices.get(startIdx));
 
@@ -298,6 +292,8 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
             }
         }
     }*/
+
+    @Override
     public void prim(K startKey) {
         int startIdx = searchVertex(startKey);
 

@@ -4,8 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GraphListTest {
-    private GraphList graphList;
+public class GraphTest {
+    private GraphList<String> graphList;
+    private GraphForMatrix<String, String> matrixGraph;
 
     public void setup1(){
         this.graphList = new GraphList(false);
