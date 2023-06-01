@@ -52,6 +52,10 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
         }
     }
 
+    public ArrayList<Vertex1<T, K>> getVertices() {
+        return vertices;
+    }
+
     public int searchVertex(K key){
         int foundedVertexInx = -1;
         for (int i= 0; i<vertices.size(); i++){
@@ -175,5 +179,4 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
         vertices.get(index);
 
     }
-
 }
