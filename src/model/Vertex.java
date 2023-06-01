@@ -3,15 +3,38 @@ import java.util.ArrayList;
 public class Vertex<T extends Comparable<T>> {
 
     private T value;
+    double x;
+    double y;
     private ArrayList<Vertex<T>> adjacentVertices;
-    private ArrayList<Edge<T>> edges;
     private int color, dInit, dEnd;
     private Vertex<T> predecessor;
 
-    public Vertex(T value) {
+
+    public Vertex(T value, double x, double y) {
+        this.x = x;
+        this.y = y;
         this.value = value;
         this.adjacentVertices = new ArrayList<>();
-        this.edges = new ArrayList<>();
+    }
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
     }
 
     public T getValue() {
@@ -50,10 +73,9 @@ public class Vertex<T extends Comparable<T>> {
         this.predecessor = predecessor;
     }
 
-    public boolean addAdjacent(Vertex<T> vertex, double weight){
+    public boolean addAdjacent(Vertex<T> vertex){
         if (!searchAdjacent(vertex)){
             adjacentVertices.add(vertex);
-            edges.add(new Edge<>(this, vertex, weight));
             return true;
         }
         return false;
@@ -70,10 +92,6 @@ public class Vertex<T extends Comparable<T>> {
 
     public ArrayList<Vertex<T>> getAdjacentVertices() {
         return adjacentVertices;
-    }
-
-    public ArrayList<Edge<T>> getEdges() {
-        return edges;
     }
 
     public void addConnection(Vertex<T> vertex){

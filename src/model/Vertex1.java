@@ -1,13 +1,13 @@
 package model;
 import java.util.ArrayList;
-public class Vertex1<T, K extends Comparable<K>> implements Comparable<Vertex1> {
+public class Vertex1<T, K extends Comparable<K>> {
 
     private T value;
     private K key;
     private ArrayList<Edge> edges;
     private int color, dInit, dEnd;
     private Vertex1<T, K> predecessor;
-    private double distance;
+    private int distance;
 
 
     public Vertex1(T value, K key) {
@@ -57,14 +57,6 @@ public class Vertex1<T, K extends Comparable<K>> implements Comparable<Vertex1> 
         this.predecessor = predecessor;
     }
 
-    public double getDistance() {
-        return distance;
-    }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
-    }
-
     public void addEdge(Edge edge){
         this.edges.add(edge);
     }
@@ -75,7 +67,7 @@ public class Vertex1<T, K extends Comparable<K>> implements Comparable<Vertex1> 
 
     public void removeEdge(Vertex1 destVertex){
         for (int i = 0; i <edges.size(); i++){
-            if (edges.get(i).getDestinationVertex().equals(destVertex)){
+            if (edges.get(i).getFinalVertex().equals(destVertex)){
                 edges.remove(i);
             }
         }
@@ -104,10 +96,5 @@ public class Vertex1<T, K extends Comparable<K>> implements Comparable<Vertex1> 
 
     public void addConnection(Edge edge){
         edges.add(edge);
-    }
-
-    @Override
-    public int compareTo(Vertex1 o) {
-        return (int)(distance-o.getDistance());
     }
 }

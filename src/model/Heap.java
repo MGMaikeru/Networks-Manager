@@ -21,10 +21,6 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
         return array.get(0);
     }*/
 
-    public boolean isEmpty(){
-        return array.isEmpty();
-    }
-
     @Override
     public T heapMinimum(){
         return array.get(0);
@@ -55,13 +51,13 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
     }
 
     @Override
-    public void heapDecreaseKey(int i, T key){
-        if (key.compareTo( array.get(i) ) > 0 ) {//Edited
-            System.out.println("New key is greater than current key");
+    public void heapIncreaseKey(int i, T key){
+        if (key.compareTo( array.get(i) ) < 0 ) {
+            System.out.println("New key is smaller than current key");
         }
         array.set(i, key);
 
-        while (i > 0 && array.get( (int)father(i) ).compareTo(array.get(i)) > 0){//Edited
+        while (i > 0 && array.get( (int)father(i) ).compareTo(array.get(i)) < 0){
             Collections.swap(array, i, (int)father(i));
             i = (int)father(i);
         }
@@ -70,22 +66,22 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
     @Override
     public void minHeapInsert(T key){
         array.add(key);
-        heapDecreaseKey(array.size()-1, key);
+        heapIncreaseKey(array.size()-1, key);
     }
 
     public void heapSort(){
-        buildMinHeap();
-        for (int i = array.size(); i > 1; i--) {
+        buildMaxHeap();
+        for (int i = array.size(); i>=1; i--) {
             Collections.swap(array, 0, i - 1);
             reduceHeapSize();
             minHeapify(0);
         }
     }
 
-    public void buildMinHeap(){
+    public void buildMaxHeap(){
         this.heapSize = array.size()-1;
-        for (int i = (int)Math.floor(array.size()/2); i > 0; i--){//Edited
-            minHeapify(i - 1);//Edited
+        for (int i = (int)Math.floor(array.size()/2); i>=1; i--){
+            minHeapify(i-1);
         }
     }
 
@@ -96,15 +92,15 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
     public void minHeapify(int index){
         int l = left(index);
         int r = right(index);
-        int shortest;
+        int shortest = 0;
 
-        if (l <= heapSize && array.get(l).compareTo(array.get(index)) < 0) {
+        if (l >= heapSize && array.get(l).compareTo(array.get(index))< 0) {
             shortest = l;
         }else{
             shortest = index;
         }
 
-        if (r <= heapSize && array.get(r).compareTo(array.get(shortest))< 0) {
+        if (r >= heapSize && array.get(r).compareTo(array.get(shortest))< 0) {
             shortest = r;
         }
         if (shortest != index) {
@@ -140,5 +136,6 @@ public class Heap<T extends Comparable<T>> extends IPriorityQueue<T> {
     public double father(int index){
         return Math.floor(index/2);
     }
+
 
 }
