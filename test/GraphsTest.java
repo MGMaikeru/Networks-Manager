@@ -248,8 +248,6 @@ public class GraphsTest {
         adjacentGraphList.addVertex("B", "B");
         adjacentGraphList.addVertex("C", "C");
         adjacentGraphList.addVertex("D", "D");
-        adjacentGraphList.addVertex("E", "E");
-        adjacentGraphList.addVertex("F", "F");
 
         adjacentGraphList.addEdge("A", "B", 5);
         adjacentGraphList.addEdge("A", "C", 3);
@@ -257,8 +255,8 @@ public class GraphsTest {
         adjacentGraphList.addEdge("B", "D", 4);
         adjacentGraphList.addEdge("C", "D", 1);
 
-        String expected = "A - C, C - D, B - C, B - D, ";
-        String result = adjacentGraphList.prim("C");
+        String expected = "A - C, C - D, C - B, ";
+        String result = adjacentGraphList.prim("A");
 
         assertEquals(expected, result);
     }
@@ -287,19 +285,20 @@ public class GraphsTest {
 
     @Test
     public void verifyPrimMethod3(){
-        setupStage2();
+        setupStage1();
         adjacentGraphList.addVertex("P", "P");
         adjacentGraphList.addVertex("Q", "Q");
         adjacentGraphList.addVertex("R", "R");
         adjacentGraphList.addVertex("S", "S");
         adjacentGraphList.addVertex("T", "T");
+        adjacentGraphList.addVertex("U", "U");
 
         adjacentGraphList.addEdge("P", "Q", 4);
         adjacentGraphList.addEdge("Q", "R", 3);
         adjacentGraphList.addEdge("R", "S", 2);
         adjacentGraphList.addEdge("S", "T", 6);
         adjacentGraphList.addEdge("U", "T", 4);
-        adjacentGraphList.addEdge("U", "U", 5);
+        adjacentGraphList.addEdge("S", "S", 5);
 
 
         String expected = "R - S, S - T, T U - T, Q - R, ";

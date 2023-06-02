@@ -221,7 +221,7 @@ public class GraphList<T extends Comparable<T>,K extends Comparable <K>> extends
         }
 
         if (visitedVertices.size() != vertices.size()) {
-            return "The graph is not connected.";
+            return  "The graph is not connected.";
         }
 
         return result.toString();
