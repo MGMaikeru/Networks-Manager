@@ -14,12 +14,24 @@ public class GraphList<T extends Comparable<T>,K extends Comparable <K>> extends
 
     @Override
     public void addVertex(K key, T value) {
-        if (searchVertex(key) == -1) {
-            vertices.add(new Vertex1(value,key));
+        try {
+            if (key.equals("")){
+                throw new RuntimeException("There can't be vertex with null key");
+            }else {
+                if (searchVertex(key) == -1) {
+                    vertices.add(new Vertex1(value,key));
 
-        } else if (searchVertex(key) > 1) {
-            System.out.println("Vertex Key already exist");
+                } else if (searchVertex(key) > 1) {
+                    System.out.println("Vertex Key already exist");
+                }
+            }
+        }catch (RuntimeException e){
+            throw e;
         }
+    }
+
+    public ArrayList<Vertex1> getVertices(){
+        return  this.vertices;
     }
 
     private int searchVertex(K key) {
@@ -48,29 +60,31 @@ public class GraphList<T extends Comparable<T>,K extends Comparable <K>> extends
 
     @Override
     public String addEdge(K srcKey, K destKey, double weight) {
-        int origin = searchVertex(srcKey);
-        int destination = searchVertex(destKey);
+        int srcIndex = searchVertex(srcKey);
+        int destIndex = searchVertex(destKey);
 
-        if (origin != -1 && destination != -1){
-            if (origin == destination && !isDirected){
-                return "You cannot add a loop in an undirected graph!";
-            }else {
-                Vertex1<T, K> srcVertex = vertices.get(origin);
-                Vertex1<T, K> destVertex = vertices.get(destination);
-
-                srcVertex.addEdge(new Edge(srcVertex, destVertex, weight));
-                boolean isAdded = srcVertex.addAdjacent(destVertex, weight);
-
-                if (isDirected && isAdded){
-                    destVertex.addAdjacent(srcVertex, weight);
-                }else{
-                    return "These vertexes are already connected";
-                }
-                return  "Vertices successfully connected";
-            }
-        }else {
-            return  "Vertex does not exist";
+        if (srcIndex == -1 || destIndex == -1) {
+            return "One or both vertices do not exist";
         }
+
+        Vertex1<T, K> srcVertex = vertices.get(srcIndex);
+        Vertex1<T, K> destVertex = vertices.get(destIndex);
+
+        if (srcVertex.searchAdjacent(destVertex)) {
+            return "These vertices are already connected";
+        }
+
+        Edge<T> edge = new Edge<>(srcVertex, destVertex, weight);
+        srcVertex.addEdge(edge);
+        srcVertex.addAdjacent(destVertex, weight);
+
+        if (!isDirected) {
+            Edge<T> reverseEdge = new Edge<>(destVertex, srcVertex, weight);
+            destVertex.addEdge(reverseEdge);
+            destVertex.addAdjacent(srcVertex, weight);
+        }
+
+        return "Vertices successfully connected";
     }
 
     @Override
@@ -110,53 +124,13 @@ public class GraphList<T extends Comparable<T>,K extends Comparable <K>> extends
         return msg;
     }
 
-    /*@Override
-    public void dijkstra(K startKey) {
-        Vertex1<T, K> initialVertex = vertices.get(searchVertex(startKey));
-        if (initialVertex == null) {
-            System.out.println("The start vertex does not exist in the graph.");
-            return;
-        }
-
-        double[] distances = new double[vertices.size()];
-        Arrays.fill(distances, Double.MAX_VALUE);
-        distances[vertices.indexOf(initialVertex)] = 0.0;
-
-        PriorityQueue<Vertex1<T,K>> queue = new PriorityQueue<>((v1, v2) -> (int) (distances[vertices.indexOf(v1)] - distances[vertices.indexOf(v2)]));
-        queue.add(initialVertex);
-
-        while (!queue.isEmpty()) {
-            Vertex1<T, K> current = queue.poll();
-
-            for (Edge<T> edge : current.getEdges()) {
-                Vertex1<T,K> neighbor = edge.getDestinationVertex();
-                double weight = edge.getWeight();
-
-                if (weight < distances[vertices.indexOf(neighbor)]) {
-                    distances[vertices.indexOf(neighbor)] = weight;
-                    neighbor.setPredecessor(current);
-
-                    // Update the priority of the neighbor in the priority queue
-                    queue.remove(neighbor);
-                    queue.add(neighbor);
-                }
-            }
-        }
-
-        // Print the shortest distances from the start vertex to all other vertices
-        System.out.println("Shortest distances from vertex " + startKey + ":");
-        for (int i = 0; i < vertices.size(); i++) {
-            System.out.println(vertices.get(i).getValue() + ": " + distances[i]);
-        }
-    }*/
     @Override
-    public void dijkstra(K startKey, K endKey) {
+    public String dijkstra(K startKey, K endKey) {
         Vertex1<T, K> startVertex = vertices.get(searchVertex(startKey));
         Vertex1<T, K> endVertex = vertices.get(searchVertex(endKey));
 
         if (startVertex == null || endVertex == null) {
-            System.out.println("The start or end vertex does not exist in the graph.");
-            return;
+            return "The start or end vertex does not exist in the graph.";
         }
 
         double[] distances = new double[vertices.size()];
@@ -196,86 +170,61 @@ public class GraphList<T extends Comparable<T>,K extends Comparable <K>> extends
         }
 
         if (path.get(0) != startVertex) {
-            System.out.println("There is no path from vertex " + startKey + " to vertex " + endKey + ".");
-            return;
+            return "There is no path from  leading vertex " + startKey + " to " + endKey + ".";
         }
 
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < path.size(); i++) {
             Vertex1<T, K> vertex = path.get(i);
-            System.out.print(vertex.getKey());
+            result.append(vertex.getKey());
             if (i != path.size() - 1) {
-                System.out.print(" -> ");
+                result.append(" -> ");
             }
         }
-        System.out.println();
+
+        return result.toString();
     }
 
     @Override
-    public void prim(K startKey) {
-        Vertex1<T,K> startVertex = vertices.get(searchVertex(startKey));
+    public String prim(K startKey) {
+        Vertex1<T, K> startVertex = vertices.get(searchVertex(startKey));
 
         if (startVertex == null) {
-            System.out.println("The start vertex does not exist in the graph.");
-            return;
+            return "The start vertex does not exist in the graph.";
         }
 
-        int numVertices = vertices.size();
-        boolean[] visited = new boolean[numVertices];
-        double[] key = new double[numVertices];
-        Arrays.fill(key, Double.MAX_VALUE);
-        key[vertices.indexOf(startVertex)] = 0.0;
+        PriorityQueue<Edge<T>> queue = new PriorityQueue<>((e1, e2) -> (int) (e1.getWeight() - e2.getWeight()));
+        ArrayList<Vertex1<T, K>> visitedVertices = new ArrayList<>();
+        StringBuilder result = new StringBuilder();
 
-        int[] pred = new int[numVertices];
-        Arrays.fill(pred, -1);
+        visitedVertices.add(startVertex);
 
-        double totalCost = 0.0;
+        for (Edge<T> edge : startVertex.getEdges()) {
+            queue.add(edge);
+        }
 
-        for (int i = 0; i < numVertices; i++) {
-            int uIdx = findMinKeyVertex(key, visited);
-            if (uIdx == -1) {
-                break;
-            }
+        while (!queue.isEmpty()) {
+            Edge<T> minEdge = queue.poll();
+            Vertex1<T, K> srcVertex = minEdge.getInitialVertex();
+            Vertex1<T, K> destVertex = minEdge.getDestinationVertex();
 
-            visited[uIdx] = true;
-            Vertex1<T,K> u = vertices.get(uIdx);
+            if (!visitedVertices.contains(destVertex)) {
+                visitedVertices.add(destVertex);
+                result.append(srcVertex.getKey()).append(" - ").append(destVertex.getKey()).append(", ");
 
-            for (Edge<T> edge : u.getEdges()) {
-                Vertex1<T,K> v = edge.getDestinationVertex();
-                int vIdx = vertices.indexOf(v);
-
-                double weight = edge.getWeight();
-
-                if (!visited[vIdx] && weight < key[vIdx]) {
-                    key[vIdx] = weight;
-                    pred[vIdx] = uIdx;
+                for (Edge<T> edge : destVertex.getEdges()) {
+                    if (!visitedVertices.contains(edge.getDestinationVertex())) {
+                        queue.add(edge);
+                    }
                 }
             }
         }
 
-        System.out.println("Minimum Spanning Tree:");
-        for (int i = 0; i < numVertices; i++) {
-            if (pred[i] != -1) {
-                Vertex1<T,K> u = vertices.get(pred[i]);
-                Vertex1<T,K> v = vertices.get(i);
-
-                System.out.println(u.getKey() + " goes to " + v.getKey() + " : " + key[i]);
-                totalCost += key[i];
-            }
-        }
-        System.out.println("Total: " + totalCost);
-    }
-    private int findMinKeyVertex(double[] key, boolean[] visited) {
-        double minKey = Integer.MAX_VALUE;
-        int minIdx = -1;
-
-        for (int i = 0; i < vertices.size(); i++) {
-            if (!visited[i] && key[i] < minKey) {
-                minKey = key[i];
-                minIdx = i;
-            }
+        if (visitedVertices.size() != vertices.size()) {
+            return "The graph is not connected.";
         }
 
-        return minIdx;
+        return result.toString();
     }
 
     public boolean searchSpecificAdjacent(K value1, K value2){
@@ -285,41 +234,3 @@ public class GraphList<T extends Comparable<T>,K extends Comparable <K>> extends
     }
 }
 
-
-    /*@Override
-       public void dfs(){
-           String msg = "";
-           for (Vertex<T> vertex: vertices) {
-               vertex.setColor(0);
-               vertex.setPredecessor(null);
-               vertex.setDInit(0);
-            }
-           this.time = 0;
-           for (Vertex<T> vertex: vertices) {
-               if (vertex.getColor() == 0)
-                   dfs(vertex);
-           }
-       }
-      private void dfs(Vertex<T> vertex){
-           time ++;
-           vertex.setDInit(time);
-           vertex.setColor(1);
-           for (Vertex<T> v: vertex.getAdjacentVertices()) {
-               if (v.getColor() == 0) {
-                   v.setPredecessor(vertex);
-                    dfs(v);
-                }
-            }
-            vertex.setColor(2);
-            time++;
-            vertex.setDEnd(time);
-        }
-
-        public String checkDfs(){
-            String msg = "";
-            for (Vertex vertex: vertices) {
-                msg += vertex.getValue() + " d: " + vertex.getDInit() + " f: " + vertex.getDEnd() + "\n";
-            }
-            return msg;
-        }
-*/
