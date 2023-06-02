@@ -5,6 +5,7 @@ public class Vertex1<T, K extends Comparable<K>> implements Comparable<Vertex1> 
     private T value;
     private K key;
     private ArrayList<Edge> edges;
+    private ArrayList<Vertex1<T,K>> adjacentVertices;
     private int color, dInit, dEnd;
     private Vertex1<T, K> predecessor;
     private double distance;
@@ -14,6 +15,7 @@ public class Vertex1<T, K extends Comparable<K>> implements Comparable<Vertex1> 
         this.value = value;
         this.key = key;
         this.edges = new ArrayList<>();
+        this.adjacentVertices = new ArrayList<>();
         this.distance = Integer.MAX_VALUE;
     }
 
@@ -81,15 +83,16 @@ public class Vertex1<T, K extends Comparable<K>> implements Comparable<Vertex1> 
         }
     }
 
-    /*public boolean addAdjacent(Vertex1 vertex){
+    public boolean addAdjacent(Vertex1<T,K> vertex, double weight){
         if (!searchAdjacent(vertex)){
             adjacentVertices.add(vertex);
+            edges.add(new Edge<>(this,vertex,weight));
             return true;
         }
         return false;
     }
 
-    /*public boolean searchAdjacent(Vertex<T> vertex){
+    public boolean searchAdjacent(Vertex1<T,K> vertex){
         for (Vertex1 u : adjacentVertices) {
             if (u.equals(vertex)) {
                 return true;
@@ -98,9 +101,9 @@ public class Vertex1<T, K extends Comparable<K>> implements Comparable<Vertex1> 
         return false;
     }
 
-    public ArrayList<Vertex1> getAdjacentVertices() {
+    public ArrayList<Vertex1<T, K>> getAdjacentVertices() {
         return adjacentVertices;
-    }*/
+    }
 
     public void addConnection(Edge edge){
         edges.add(edge);

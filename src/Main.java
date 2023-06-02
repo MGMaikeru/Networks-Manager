@@ -2,7 +2,7 @@ import exception.EmptyFieldException;
 import model.*;
 
 public class Main {
-    private GraphList graph;
+    /*private GraphList graph;
     private GraphForMatrix graph2;
     private GraphForMatrix graph3;
     private Heap<Integer> priorityQueue;
@@ -37,7 +37,7 @@ public class Main {
         m.priorityQueue.minHeapInsert(1);
         System.out.println(m.priorityQueue.printArray());
         m.graph2.printGraph();*/
-        System.out.println("");
+        /*System.out.println("");
         m.graph.addVertex("a");
         m.graph.addVertex("b");
         m.graph.addVertex("c");
@@ -56,6 +56,6 @@ public class Main {
         m.graph.dijkstra("a");
         m.graph.prim("a");
         //m.graph2.printGraph();
-
     }
+*/
 }

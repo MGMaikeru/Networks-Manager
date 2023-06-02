@@ -50,16 +50,16 @@ public class Vertex<T extends Comparable<T>> {
         this.predecessor = predecessor;
     }
 
-    public boolean addAdjacent(Vertex<T> vertex, double weight){
+    /*public boolean addAdjacent(Vertex<T> vertex, double weight){
         if (!searchAdjacent(vertex)){
             adjacentVertices.add(vertex);
             edges.add(new Edge<>(this, vertex, weight));
             return true;
         }
         return false;
-    }
+    }*/
 
-    public boolean searchAdjacent(Vertex<T> vertex){
+    /*public boolean searchAdjacent(Vertex<T> vertex){
         for (Vertex<T> u : adjacentVertices) {
             if (u.equals(vertex)) {
                 return true;
@@ -70,7 +70,7 @@ public class Vertex<T extends Comparable<T>> {
 
     public ArrayList<Vertex<T>> getAdjacentVertices() {
         return adjacentVertices;
-    }
+    }*/
 
     public ArrayList<Edge<T>> getEdges() {
         return edges;

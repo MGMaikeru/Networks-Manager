@@ -38,7 +38,7 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
         adjMatrix = newAdjMatrix;
     }
 
-    public void addEdge(K srcKey, K destKey, double weight) {
+    public String addEdge(K srcKey, K destKey, double weight) {
         int srcIdx = searchVertex(srcKey);
         int destIdx = searchVertex(destKey);
 
@@ -52,10 +52,12 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
             }
             adjMatrix[srcIdx][destIdx] = 1;
             adjMatrix[destIdx][srcIdx] = 1;
+            return "Vertices successfully connected";
         }
+        return "Vertex does not exist";
     }
 
-    public int searchVertex(K key){
+    private int searchVertex(K key){
         int foundedVertexInx = -1;
         for (int i= 0; i<vertices.size(); i++){
             if (vertices.get(i).getKey().equals(key)){
@@ -83,12 +85,16 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
     }
 
     @Override
-    public void getAdjacent() {
-        for (int i = 0; i < numVertices; i++) {
-            for (int j = 0; j < numVertices; j++) {
-                System.out.print(adjMatrix[i][j] + " ");
+    public String getAdjacent(K key) {
+        Vertex1<T,K> vertex = vertices.get(searchVertex(key));
+        String adjacent = "";
+        if (vertex != null) {
+            for (Vertex1<T,K> connection : vertex.getAdjacentVertices()) {
+                adjacent += connection.getKey() + " ";
             }
-            System.out.println();
+            return adjacent.trim();
+        }else {
+            return "This Vertex doesn't have adjacent vertexes";
         }
     }
 
@@ -200,7 +206,7 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
     }*/
 
     @Override
-    public void dijkstra(K startKey) {
+    public void dijkstra(K startKey,  K endKey) {
         int startIdx = searchVertex(startKey);
 
         if (startIdx == -1) {
