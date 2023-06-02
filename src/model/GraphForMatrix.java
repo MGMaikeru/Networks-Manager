@@ -29,22 +29,26 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
 
     @Override
     public void addVertex(K key, T value, double x, double y) {
-        Vertex1<T, K> vertex = new Vertex1<T, K>(value, key, x, y);
-        int newIndex = vertices.size();
-        numVertices ++;
-        vertices.add(vertex);
+        try {
+            if (key.equals("")){
+                throw new RuntimeException("There can't be vertex with null key");
+            }else {
+                Vertex1<T, K> vertex = new Vertex1<T, K>(value, key, x, y);
+                int newIndex = vertices.size();
+                numVertices ++;
+                vertices.add(vertex);
 
-        int[][] newAdjMatrix = new int[numVertices][numVertices];
+                int[][] newAdjMatrix = new int[numVertices][numVertices];
 
-        for (int i = 0; i < numVertices - 1; i++) {
-            System.arraycopy(adjMatrix[i], 0, newAdjMatrix[i], 0, numVertices - 1);
+                for (int i = 0; i < numVertices - 1; i++) {
+                    System.arraycopy(adjMatrix[i], 0, newAdjMatrix[i], 0, numVertices - 1);
+                }
+
+                adjMatrix = newAdjMatrix;
+            }
+        }catch (RuntimeException e){
+            throw e;
         }
-
-        adjMatrix = newAdjMatrix;
-    }
-
-    public ArrayList<Vertex1<T, K>> getVertices() {
-        return vertices;
     }
 
     public String addEdge(K srcKey, K destKey, double weight) {
@@ -54,19 +58,22 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
         if (srcIdx != -1 && destIdx != -1) {
             Vertex1<T, K> srcVertex = vertices.get(srcIdx);
             Vertex1<T, K> destVertex = vertices.get(destIdx);
-            srcVertex.addEdge(new Edge(srcVertex, destVertex, weight));
 
-            if (isDirected){
-                destVertex.addEdge(new Edge(srcVertex, destVertex, weight));
-            }
+            srcVertex.addEdge(new Edge(srcVertex, destVertex, weight));
             adjMatrix[srcIdx][destIdx] = 1;
-            adjMatrix[destIdx][srcIdx] = 1;
+
+            if (isDirected) {
+                destVertex.addEdge(new Edge(destVertex, srcVertex, weight));
+                adjMatrix[destIdx][srcIdx] = 1;
+            }
+
             return "Vertices successfully connected";
         }
+
         return "Vertex does not exist";
     }
 
-    public int searchVertex(K key){
+    private int searchVertex(K key){
         int foundedVertexInx = -1;
         for (int i= 0; i<vertices.size(); i++){
             if (vertices.get(i).getKey().equals(key)){
@@ -180,47 +187,12 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
         return msg;
     }
 
-    /*public void dijkstra(K key){
-        ArrayList<Double> dist = new ArrayList<>();
-        ArrayList<String> prev = new ArrayList<>();
-        int index = searchVertex(key);
-        Vertex1<T, K> source = vertices.get(index);
-        source.setDistance(0);
-        Heap queue = new Heap();
-
-        for (Vertex1<T, K> vertex: vertices) {
-            if (!vertex.equals(source)){
-                vertex.setDistance(Double.MAX_VALUE);
-            }
-            vertex.setPredecessor(null);
-            queue.minHeapInsert(vertex);
-        }
-        System.out.println(queue.printArray());
-        while (!queue.isEmpty()){
-            Vertex1<T, K> u = (Vertex1<T, K>) (queue.heapExtractMin());
-            for (Edge edge: u.getEdges()) {
-                double alt = u.getDistance() + edge.getWeight();
-                if (alt < edge.getFinalVertex().getDistance()){
-                    edge.getFinalVertex().setDistance(alt);
-                    edge.getFinalVertex().setPredecessor(u);
-                    queue.minHeapify(0);
-                }
-            }
-        }
-
-        for (Vertex1 vertex:vertices) {
-            System.out.println(vertex.getValue() + "Distance: " + vertex.getDistance());
-        }
-
-    }*/
-
     @Override
-    public void dijkstra(K startKey,  K endKey) {
+    public String dijkstra(K startKey, K endKey) {
         int startIdx = searchVertex(startKey);
 
         if (startIdx == -1) {
-            System.out.println("The start vertex does not exist in the graph.");
-            return;
+            return "The start vertex does not exist in the graph.";
         }
 
         double[] distances = new double[numVertices];
@@ -250,70 +222,22 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
             }
         }
 
-        // Print the shortest distances from the start vertex to all other vertices
-        System.out.println("Shortest distances from vertex " + startKey + ":");
+        StringBuilder result = new StringBuilder();
+        result.append("Shortest distances from vertex ").append(startKey).append(":\n");
         for (int i = 0; i < numVertices; i++) {
-            System.out.println(vertices.get(i).getKey() + ": " + distances[i]);
+            result.append(vertices.get(i).getKey()).append(": ").append(distances[i]).append("\n");
         }
+
+        return result.toString();
     }
 
-    /*public void  prim(K startKey){
-        int startIdx = searchVertex(startKey);
-
-        if (startIdx == -1) {
-            System.out.println("The start vertex does not exist in the graph.");
-            return;
-        }
-        double[] key = new double[numVertices];
-        Arrays.fill(key, Integer.MAX_VALUE);
-        key[startIdx] = 0;
-
-        int[] pred = new int[numVertices];
-        Arrays.fill(pred, -1);
-public abstract String bfs(K key) throws EmptyFieldException;
-        PriorityQueue<Vertex1<T, K>> queue = new PriorityQueue<>((v1, v2) -> (int) (key[vertices.indexOf(v1)] - key[vertices.indexOf(v2)]));
-        queue.add(vertices.get(startIdx));
-
-        while (!queue.isEmpty()) {
-            Vertex1<T, K> u = queue.poll();
-
-            int uIdx = vertices.indexOf(u);
-
-            for (Edge edge : u.getEdges()) {
-                Vertex1<T, K> v = edge.getDestinationVertex();
-                int vIdx = vertices.indexOf(v);
-
-                double weight = edge.getWeight();
-
-                if (vIdx != -1 && weight < key[vIdx]) {
-                    key[vIdx] = weight;
-                    pred[vIdx] = uIdx;
-
-                    // Update the priority of the neighbor in the priority queue
-                    queue.remove(v);
-                    queue.add(v);
-                }
-            }
-        }
-
-        // Print the minimum spanning tree
-        System.out.println("Minimum Spanning Tree:");
-        for (int i = 0; i < numVertices; i++) {
-            if (pred[i] != -1) {
-                Vertex1<T, K> u = vertices.get(pred[i]);
-                Vertex1<T, K> v = vertices.get(i);
-
-                System.out.println(u.getValue() + " goes to " + v.getValue() + " : " + key[i]);
-            }
-        }
-    }*/
 
     @Override
-    public void prim(K startKey) {
+    public String prim(K startKey) {
         int startIdx = searchVertex(startKey);
 
         if (startIdx == -1) {
-            System.out.println("The start vertex does not exist in the graph.");
+            return "The start vertex does not exist in the graph.";
         }
 
         boolean[] visited = new boolean[numVertices];
@@ -347,13 +271,19 @@ public abstract String bfs(K key) throws EmptyFieldException;
             }
         }
 
-        System.out.println("Minimum Spanning Tree:");
+        StringBuilder result = new StringBuilder();
+        result.append("Minimum Spanning Tree:\n");
         for (int i = 0; i < numVertices; i++) {
             if (pred[i] != -1) {
                 Vertex1<T, K> u = vertices.get(pred[i]);
                 Vertex1<T, K> v = vertices.get(i);
 
-                System.out.println(u.getValue() + " goes to " + v.getValue() + " : " + key[i]);
+                result.append(u.getValue())
+                        .append(" goes to ")
+                        .append(v.getValue())
+                        .append(" : ")
+                        .append(key[i])
+                        .append("\n");
             }
         }
 
@@ -363,7 +293,9 @@ public abstract String bfs(K key) throws EmptyFieldException;
             }
         }
 
-        System.out.println("Total: " + totalCost);
+        result.append("Total: ").append(totalCost);
+
+        return result.toString();
     }
 
     private int findMinKeyVertex(double[] key, boolean[] visited) {
@@ -380,4 +312,7 @@ public abstract String bfs(K key) throws EmptyFieldException;
         return minIdx;
     }
 
+    public ArrayList<Vertex1<T, K>> getVertices() {
+        return this.vertices;
+    }
 }

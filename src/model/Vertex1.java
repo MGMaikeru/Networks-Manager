@@ -6,7 +6,8 @@ public class Vertex1<T, K extends Comparable<K>> implements Comparable<Vertex1> 
     private K key;
     private ArrayList<Edge> edges;
     private ArrayList<Vertex1<T,K>> adjacentVertices;
-    private int color, dInit, dEnd;
+    private int color;
+    private double dInit, dEnd;
     private Vertex1<T, K> predecessor;
     private double distance;
     private double x, y;
@@ -58,7 +59,7 @@ public class Vertex1<T, K extends Comparable<K>> implements Comparable<Vertex1> 
         return color;
     }
 
-    public int getDInit() {
+    public double getDInit() {
         return dInit;
     }
 
@@ -70,11 +71,11 @@ public class Vertex1<T, K extends Comparable<K>> implements Comparable<Vertex1> 
         this.color = color;
     }
 
-    public void setDInit(int distance) {
+    public void setDInit(double distance) {
         this.dInit = distance;
     }
 
-    public int getDEnd() {
+    public double getDEnd() {
         return dEnd;
     }
 
@@ -115,8 +116,9 @@ public class Vertex1<T, K extends Comparable<K>> implements Comparable<Vertex1> 
             adjacentVertices.add(vertex);
             edges.add(new Edge<>(this,vertex,weight));
             return true;
+        }else {
+            return false;
         }
-        return false;
     }
 
     public boolean searchAdjacent(Vertex1<T,K> vertex){
