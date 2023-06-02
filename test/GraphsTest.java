@@ -248,8 +248,6 @@ public class GraphsTest {
         adjacentGraphList.addVertex("B", "B");
         adjacentGraphList.addVertex("C", "C");
         adjacentGraphList.addVertex("D", "D");
-        adjacentGraphList.addVertex("E", "E");
-        adjacentGraphList.addVertex("F", "F");
 
         adjacentGraphList.addEdge("A", "B", 5);
         adjacentGraphList.addEdge("A", "C", 3);
