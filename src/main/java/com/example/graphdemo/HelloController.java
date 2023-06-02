@@ -46,6 +46,9 @@ public class HelloController implements Initializable {
     private GraphForMatrix<Vertex1<Node, String>, String> graph;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        keyTF.setText(null);
+        nameTF.setText(null);
+        bandTF.setText(null);
         graph = new GraphForMatrix<>(false);
         gc = canvas.getGraphicsContext2D();
         canvas.setOnMousePressed(this::onMousePressed);
@@ -92,18 +95,17 @@ public class HelloController implements Initializable {
     private void onMousePressed(MouseEvent e) {
         //System.out.println("X: " + e.getX() + " " + "Y: " + e.getY());
         int k = graph.searchVertex(keyTF.getText());
-        if(graph.getVertices().get(k) == null){
-
-            String name = nameTF.getText();
-            double band = Double.parseDouble(bandTF.getText());
-            String key = keyTF.getText();
-            if((key == null) || (name == null) || (band == 0)){
+        if(k == -1){
+            if(keyTF.getText() == null || bandTF.getText() == null || nameTF.getText() == null){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setContentText("Please provide the full information.");
                 alert.showAndWait();
             }
             else {
+                String name = nameTF.getText();
+                double band = Double.parseDouble(bandTF.getText());
+                String key = keyTF.getText();
                 Node n = new Node(keyTF.getText(), band, name);
                 Vertex1 v = new Vertex1<>(n, keyTF.getText(), e.getX(), e.getY());
                 graph.addVertex(key, v, e.getX(), e.getY());
