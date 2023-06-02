@@ -20,8 +20,8 @@ public class GraphForMatrix <T, K extends Comparable<K>>{
 
     }
 
-    public void addVertex(K key, T value) {
-        Vertex1<T, K> vertex = new Vertex1<T, K>(value, key);
+    public void addVertex(K key, T value, double x, double y) {
+        Vertex1<T, K> vertex = new Vertex1<T, K>(value, key, x, y);
         int newIndex = vertices.size();
         numVertices ++;
         vertices.add(vertex);

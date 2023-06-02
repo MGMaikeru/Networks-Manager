@@ -5,17 +5,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import java.lang.Math;
-import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
+
 import model.*;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -23,23 +21,31 @@ public class HelloController implements Initializable {
 
     @FXML
     private Canvas canvas;
-    GraphicsContext gc;
+    private GraphicsContext gc;
     @FXML
     private Button edgeBTN;
     @FXML
-    private CheckBox dirCB;
+    private Button addBTN;
     @FXML
-    private TextField finalBTN;
+    private Button removeBTN;
+    @FXML
+    private TextField finalTF;
 
     @FXML
-    private TextField initiBTN;
+    private TextField initTF;
+    @FXML
+    private TextField nameTF;
+    @FXML
+    private TextField bandTF;
+    @FXML
+    private TextField keyTF;
+    @FXML
+    private TextField valueTF;
 
-    private int counter = 0;
-    private GraphForMatrix<Vertex1<Node, String>, String> dirGraph;
-    private GraphForMatrix<Vertex1, String> graph;
+    private Integer counter = 0;
+    private GraphForMatrix<Vertex1<Node, String>, String> graph;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        dirGraph = new GraphForMatrix<>(true);
         graph = new GraphForMatrix<>(false);
         gc = canvas.getGraphicsContext2D();
         canvas.setOnMousePressed(this::onMousePressed);
@@ -47,27 +53,35 @@ public class HelloController implements Initializable {
 
     @FXML
     void addEdge(ActionEvent event) {
-        String  init = initiBTN.getText();
-        String fin = finalBTN.getText();
-        if (dirCB.isSelected()) {
+        String  init = initTF.getText();
+        String fin = finalTF.getText();
             for (int i = 0; i < counter; i++){
-                Vertex1<Node, String> v = dirGraph.getVertices().get(dirGraph.searchVertex(init)).getValue();
-                Vertex1<Node, String> v2 = dirGraph.getVertices().get(dirGraph.searchVertex(fin)).getValue();
-                if(v != null && v2 != null) dirGraph.addEdge(v.getKey(),v2.getKey());
-                gc.setStroke(Color.DARKRED);
-                gc.setLineWidth(1);
-                //gc.strokeLine(v.getX()+5, v.getY(), v2.getX()-5, v2.getY());
-            }
-        } else {
-            for (int i = 0; i < counter; i++){
-                Vertex1<Node, String> v = dirGraph.getVertices().get(dirGraph.searchVertex(init)).getValue();
-                Vertex1<Node, String> v2 = dirGraph.getVertices().get(dirGraph.searchVertex(fin)).getValue();
+                Vertex1<Node, String> v = graph.getVertices().get(graph.searchVertex(init)).getValue();
+                Vertex1<Node, String> v2 = graph.getVertices().get(graph.searchVertex(fin)).getValue();
+                if(v == null || v2 == null) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setContentText("The Vertex does not exist in the notDirected Graph");
+                    alert.showAndWait();
+                }
                 if(v != null && v2 != null) graph.addEdge(v.getKey(),v2.getKey());
+                initTF.setText(null);
+                finalTF.setText(null);
                 gc.setStroke(Color.RED);
                 gc.setLineWidth(2);
-                //gc.strokeLine(v.getX()+5, v.getY(), v2.getX()-5, v2.getY());
+                gc.strokeLine(v.getX()+3, v.getY(), v2.getX()-3, v2.getY());
             }
-        }
+
+    }
+
+    @FXML
+    void modify(ActionEvent event) {
+
+    }
+
+    @FXML
+    void remove(ActionEvent event) {
+
     }
 
     public double calculateAttenuation(Vertex1<Node, String> initialNode, Vertex1<Node, String> destinationNode, double distance){
@@ -76,12 +90,36 @@ public class HelloController implements Initializable {
     }
 
     private void onMousePressed(MouseEvent e) {
-        System.out.println("X: " + e.getX() + " " + "Y: " + e.getY());
-        //Circle nodo1 = new Circle(e.getX(), e.getY(), 20);
-        gc.fillOval(e.getX(), e.getY(),20,20);
-        gc.fillText(Integer.toString(counter+1),e.getX(),e.getY());
-        counter++;
-        //graph.addVertex(counter,e.getX(),e.getY());
-        //dirGraph.addVertex(counter, e.getX(), e.getY());
+        //System.out.println("X: " + e.getX() + " " + "Y: " + e.getY());
+        int k = graph.searchVertex(keyTF.getText());
+        if(graph.getVertices().get(k) == null){
+
+            String name = nameTF.getText();
+            double band = Double.parseDouble(bandTF.getText());
+            String key = keyTF.getText();
+            if((key == null) || (name == null) || (band == 0)){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText("Please provide the full information.");
+                alert.showAndWait();
+            }
+            else {
+                Node n = new Node(keyTF.getText(), band, name);
+                graph.addVertex(key, n, e.getX(), e.getY());
+                gc.fillOval(e.getX(), e.getY(), 20, 20);
+                gc.fillText(keyTF.getText(), e.getX(), e.getY());
+                counter++;
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setContentText("A vertex was added.");
+                alert.showAndWait();
+            }
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setContentText("The Vertex is already in the graph");
+            alert.showAndWait();
+        }
     }
 }

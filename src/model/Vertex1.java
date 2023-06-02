@@ -4,21 +4,47 @@ public class Vertex1<T, K extends Comparable<K>> {
 
     private T value;
     private K key;
+    private double x;
+    private double y;
     private ArrayList<Edge> edges;
     private int color, dInit, dEnd;
     private Vertex1<T, K> predecessor;
     private int distance;
 
 
-    public Vertex1(T value, K key) {
+    public Vertex1(T value, K key, double x, double y) {
         this.value = value;
         this.key = key;
         this.edges = new ArrayList<>();
         this.distance = Integer.MAX_VALUE;
     }
 
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
     public T getValue() {
         return value;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    public void setKey(K key) {
+        this.key = key;
     }
 
     public K getKey() {
