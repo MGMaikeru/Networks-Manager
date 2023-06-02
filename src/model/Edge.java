@@ -1,10 +1,11 @@
 package model;
 
-public class Edge {
+public class Edge<T extends Comparable <T>>{
     private Vertex1 srcVertex;
     private Vertex1 destVertex;
-    private double weight;
 
+    private double weight;
+    //Edge for GraphMatrix
     public Edge(Vertex1 initialVertex, Vertex1 finalVertex, double weight) {
         this.srcVertex = initialVertex;
         this.destVertex = finalVertex;
@@ -15,7 +16,7 @@ public class Edge {
         return srcVertex;
     }
 
-    public Vertex1 getFinalVertex() {
+    public Vertex1 getDestinationVertex() {
         return destVertex;
     }
 
