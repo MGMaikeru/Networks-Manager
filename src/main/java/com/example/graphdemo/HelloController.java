@@ -105,7 +105,8 @@ public class HelloController implements Initializable {
             }
             else {
                 Node n = new Node(keyTF.getText(), band, name);
-                graph.addVertex(key, n, e.getX(), e.getY());
+                Vertex1 v = new Vertex1<>(n, keyTF.getText(), e.getX(), e.getY());
+                graph.addVertex(key, v, e.getX(), e.getY());
                 gc.fillOval(e.getX(), e.getY(), 20, 20);
                 gc.fillText(keyTF.getText(), e.getX(), e.getY());
                 counter++;
