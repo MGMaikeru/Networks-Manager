@@ -83,10 +83,10 @@ public class HelloController implements Initializable {
         String key = KEYTF.getText();
         if(key != null) {
             try {
-                graph.bfs(key);
+                String result = graph.bfs(key);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
-                alert.setContentText("BFS INFO HERE");
+                alert.setContentText("BFS INFO HERE" + "\n" +result);
                 alert.showAndWait();
             } catch (EmptyFieldException e) {
                 throw new RuntimeException(e);
@@ -104,10 +104,10 @@ public class HelloController implements Initializable {
         String key = KEYTF.getText();
         String key2 = KEY2TF.getText();
         if(key != null && key2 != null) {
-            graph.dijkstra(key, key2);
+            String result = graph.dijkstra(key, key2);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
-            alert.setContentText("DIJKSTRA INFO HERE");
+            alert.setContentText("DIJKSTRA INFO HERE" + "\n"+ result);
             alert.showAndWait();
         }
          else{
@@ -121,10 +121,10 @@ public class HelloController implements Initializable {
     void prim(ActionEvent event) {
         String key = KEYTF.getText();
         if(key != null) {
-            graph.prim(key);
+            String result = graph.prim(key);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
-            alert.setContentText("PRIM INFO HERE");
+            alert.setContentText("PRIM INFO HERE" +"\n "+ result);
             alert.showAndWait();
         }
          else{

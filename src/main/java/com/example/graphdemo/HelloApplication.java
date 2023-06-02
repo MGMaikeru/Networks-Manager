@@ -4,12 +4,14 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public class HelloApplication extends Application {
     public static void openWindow(String fxml) throws IOException {
@@ -17,8 +19,13 @@ public class HelloApplication extends Application {
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         Stage stage = new Stage();
-        stage.setTitle("Graph_Maker");
+        InputStream iconStream = HelloApplication.class.getResourceAsStream("/com/example/graphdemo/icon/icon.png");
+        if (iconStream != null) {
+            Image icon = new Image(iconStream);
+            stage.getIcons().add(icon);
+        }        stage.setTitle("Graph_Maker");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 

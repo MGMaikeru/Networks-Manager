@@ -179,7 +179,15 @@ public class GraphsTest {
         adjacentGraphList.addEdge("J", "E", 1);
         adjacentGraphList.addEdge("J", "H", 1);
 
-        adjacentGraphList.dijkstra("A","B");
+        try {
+            assertTrue(adjacentGraphList.bfs("D").contains("A"));
+            assertTrue(adjacentGraphList.bfs("D").contains("B"));
+            assertTrue(adjacentGraphList.bfs("D").contains("C"));
+            assertTrue(adjacentGraphList.bfs("D").contains("D"));
+            assertTrue(adjacentGraphList.bfs("D").contains("E"));
+        } catch (EmptyFieldException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test

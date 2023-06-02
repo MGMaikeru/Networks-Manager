@@ -5,6 +5,7 @@ import exception.EmptyFieldException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
@@ -55,6 +56,14 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
         int srcIdx = searchVertex(srcKey);
         int destIdx = searchVertex(destKey);
 
+        if (srcIdx == destIdx){
+            return "You cannot add a loop in an undirected graph!";
+        }
+
+        if (srcIdx == -1 || destIdx == -1) {
+            return "One or both vertices do not exist";
+        }
+
         if (srcIdx != -1 && destIdx != -1) {
             Vertex1<T, K> srcVertex = vertices.get(srcIdx);
             Vertex1<T, K> destVertex = vertices.get(destIdx);
@@ -66,8 +75,11 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
                 destVertex.addEdge(new Edge(destVertex, srcVertex, weight));
                 adjMatrix[destIdx][srcIdx] = 1;
             }
-
-            return "Vertices successfully connected";
+            if (srcVertex.searchAdjacent(destVertex)){
+                return "These vertices are already connected";
+            }else {
+                return "Vertices successfully connected";
+            }
         }
 
         return "Vertex does not exist";
@@ -143,7 +155,7 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
             u.setColor(2);
         }
         for (Vertex1<T, K> vertex: vertices) {
-            msg += vertex.getValue() + " " + vertex.getDInit() + " away.\n";
+            msg += vertex.getKey() + " " + vertex.getDInit() + " away.\n";
         }
         return msg;
     }
