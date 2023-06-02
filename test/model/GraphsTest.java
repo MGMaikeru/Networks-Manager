@@ -31,9 +31,9 @@ public class GraphsTest {
     public void verifyAddedVertex1(){
         setupStage1();
 
-        adjacentGraphList.addVertex("A", "A");
-        adjacentGraphList.addVertex("B", "B");
-        adjacentGraphList.addVertex("C", "C");
+        adjacentGraphList.addVertex("A", "A", 1, 1);
+        adjacentGraphList.addVertex("B", "B", 1, 1);
+        adjacentGraphList.addVertex("C", "C", 1, 1);
 
 
         List<String> expectedVertices = new ArrayList<>();
@@ -52,11 +52,11 @@ public class GraphsTest {
     public void verifyAddedVertex2(){
         setupStage1();
 
-        matrixGraph.addVertex("A", "A");
-        matrixGraph.addVertex("B", "B");
+        matrixGraph.addVertex("A", "A", 1, 1);
+        matrixGraph.addVertex("B", "B", 1, 1);
 
         Exception exception = assertThrows(RuntimeException.class, () -> {
-            matrixGraph.addVertex("", "C");
+            matrixGraph.addVertex("", "C", 1, 1);
         });
 
         String expectedMessage = "There can't be vertex with null key";
@@ -68,9 +68,9 @@ public class GraphsTest {
     @Test
     public void verifyAddedEdges1(){
         setupStage1();
-        adjacentGraphList.addVertex("A", "A");
-        adjacentGraphList.addVertex("B", "B");
-        adjacentGraphList.addVertex("C", "C");
+        adjacentGraphList.addVertex("A", "A", 1, 1);
+        adjacentGraphList.addVertex("B", "B", 1, 1);
+        adjacentGraphList.addVertex("C", "C", 1, 1);
 
         String result1 = adjacentGraphList.addEdge("A", "B", 1);
         String result2 = adjacentGraphList.addEdge("A", "C", 1);
@@ -84,9 +84,9 @@ public class GraphsTest {
     @Test
     public void verifyAddedEdges2(){
         setupStage1();
-        adjacentGraphList.addVertex("A", "A");
-        adjacentGraphList.addVertex("B", "B");
-        adjacentGraphList.addVertex("C", "C");
+        adjacentGraphList.addVertex("A", "A", 1, 1);
+        adjacentGraphList.addVertex("B", "B", 1, 1);
+        adjacentGraphList.addVertex("C", "C", 1, 1);
 
         String result1 = adjacentGraphList.addEdge("A", "B", 1);
         String result2 = adjacentGraphList.addEdge("A", "C", 1);
@@ -101,9 +101,9 @@ public class GraphsTest {
     @Test
     public void verifyAddedEdges3(){
         setupStage3();
-        adjacentGraphList.addVertex("A", "A");
-        adjacentGraphList.addVertex("B", "B");
-        adjacentGraphList.addVertex("C", "C");
+        adjacentGraphList.addVertex("A", "A", 1, 1);
+        adjacentGraphList.addVertex("B", "B", 1, 1);
+        adjacentGraphList.addVertex("C", "C", 1, 1);
 
         String result1 = adjacentGraphList.addEdge("A", "B", 1);
         String result2 = adjacentGraphList.addEdge("A", "C", 1);
@@ -116,11 +116,11 @@ public class GraphsTest {
     @Test
     public void verifyBFSMethod1(){
         setupStage1();
-        adjacentGraphList.addVertex("A", "A");
-        adjacentGraphList.addVertex("B", "B");
-        adjacentGraphList.addVertex("C", "C");
-        adjacentGraphList.addVertex("D", "D");
-        adjacentGraphList.addVertex("E", "E");
+        adjacentGraphList.addVertex("A", "A", 1, 1);
+        adjacentGraphList.addVertex("B", "B", 1, 1);
+        adjacentGraphList.addVertex("C", "C", 1, 1);
+        adjacentGraphList.addVertex("D", "D", 1, 1);
+        adjacentGraphList.addVertex("E", "E", 1, 1);
 
         adjacentGraphList.addEdge("A", "B", 1);
         adjacentGraphList.addEdge("B", "C", 1);
@@ -141,11 +141,11 @@ public class GraphsTest {
     @Test
     public void verifyBFSMethod2(){
         setupStage1();
-        adjacentGraphList.addVertex("A", "A");
-        adjacentGraphList.addVertex("B", "B");
-        adjacentGraphList.addVertex("C", "C");
-        adjacentGraphList.addVertex("D", "D");
-        adjacentGraphList.addVertex("E", "E");
+        adjacentGraphList.addVertex("A", "A", 1, 1);
+        adjacentGraphList.addVertex("B", "B", 1, 1);
+        adjacentGraphList.addVertex("C", "C", 1, 1);
+        adjacentGraphList.addVertex("D", "D", 1, 1);
+        adjacentGraphList.addVertex("E", "E", 1, 1);
 
         try {
             assertTrue(adjacentGraphList.bfs("A").contains(""));
@@ -157,17 +157,17 @@ public class GraphsTest {
     @Test
     public void verifyBFSMethod3(){
         setupStage1();
-        adjacentGraphList.addVertex("A", "A");
-        adjacentGraphList.addVertex("B", "B");
-        adjacentGraphList.addVertex("C", "C");
-        adjacentGraphList.addVertex("D", "D");
-        adjacentGraphList.addVertex("E", "E");
-        adjacentGraphList.addVertex("F", "F");
-        adjacentGraphList.addVertex("G", "G");
-        adjacentGraphList.addVertex("H", "H");
-        adjacentGraphList.addVertex("I", "I");
-        adjacentGraphList.addVertex("J", "J");
-        adjacentGraphList.addVertex("K", "K");
+        adjacentGraphList.addVertex("A", "A", 1, 1);
+        adjacentGraphList.addVertex("B", "B", 1, 1);
+        adjacentGraphList.addVertex("C", "C", 1, 1);
+        adjacentGraphList.addVertex("D", "D", 1, 1);
+        adjacentGraphList.addVertex("E", "E", 1, 1);
+        adjacentGraphList.addVertex("F", "F", 1, 1);
+        adjacentGraphList.addVertex("G", "G", 1, 1);
+        adjacentGraphList.addVertex("H", "H", 1, 1);
+        adjacentGraphList.addVertex("I", "I", 1, 1);
+        adjacentGraphList.addVertex("J", "J", 1, 1);
+        adjacentGraphList.addVertex("K", "K", 1, 1);
 
         adjacentGraphList.addEdge("A", "A", 1);
         adjacentGraphList.addEdge("A", "B", 1);
@@ -185,12 +185,12 @@ public class GraphsTest {
     @Test
     public void verifyDijkstraMethod1(){
         setupStage1();
-        adjacentGraphList.addVertex("A", "A");
-        adjacentGraphList.addVertex("B", "B");
-        adjacentGraphList.addVertex("C", "C");
-        adjacentGraphList.addVertex("D", "D");
-        adjacentGraphList.addVertex("E", "E");
-        adjacentGraphList.addVertex("F", "F");
+        adjacentGraphList.addVertex("A", "A", 1, 1);
+        adjacentGraphList.addVertex("B", "B", 1, 1);
+        adjacentGraphList.addVertex("C", "C", 1, 1);
+        adjacentGraphList.addVertex("D", "D", 1, 1);
+        adjacentGraphList.addVertex("E", "E", 1, 1);
+        adjacentGraphList.addVertex("F", "F", 1, 1);
 
         adjacentGraphList.addEdge("A", "B", 1);
         adjacentGraphList.addEdge("A", "C", 1);
@@ -208,12 +208,12 @@ public class GraphsTest {
     @Test
     public void verifyDijkstraMethod2(){
         setupStage1();
-        adjacentGraphList.addVertex("A", "A");
-        adjacentGraphList.addVertex("B", "B");
-        adjacentGraphList.addVertex("C", "C");
-        adjacentGraphList.addVertex("D", "D");
-        adjacentGraphList.addVertex("E", "E");
-        adjacentGraphList.addVertex("F", "F");
+        adjacentGraphList.addVertex("A", "A", 1, 1);
+        adjacentGraphList.addVertex("B", "B", 1, 1);
+        adjacentGraphList.addVertex("C", "C", 1, 1);
+        adjacentGraphList.addVertex("D", "D", 1, 1);
+        adjacentGraphList.addVertex("E", "E", 1, 1);
+        adjacentGraphList.addVertex("F", "F", 1, 1);
 
         adjacentGraphList.addEdge("A", "B", 1);
         adjacentGraphList.addEdge("A", "C", 1);
@@ -228,11 +228,11 @@ public class GraphsTest {
     @Test
     public void verifyDijkstraMethod3(){
         setupStage1();
-        adjacentGraphList.addVertex("P", "P");
-        adjacentGraphList.addVertex("Q", "Q");
-        adjacentGraphList.addVertex("R", "R");
-        adjacentGraphList.addVertex("S", "S");
-        adjacentGraphList.addVertex("T", "T");
+        adjacentGraphList.addVertex("P", "P", 1, 1);
+        adjacentGraphList.addVertex("Q", "Q", 1, 1);
+        adjacentGraphList.addVertex("R", "R", 1, 1);
+        adjacentGraphList.addVertex("S", "S", 1, 1);
+        adjacentGraphList.addVertex("T", "T", 1, 1);
 
         adjacentGraphList.addEdge("P", "Q", 2);
         adjacentGraphList.addEdge("P", "R", 3);
@@ -246,10 +246,10 @@ public class GraphsTest {
     @Test
     public void verifyPrimMethod1() {
         setupStage1();
-        adjacentGraphList.addVertex("A", "A");
-        adjacentGraphList.addVertex("B", "B");
-        adjacentGraphList.addVertex("C", "C");
-        adjacentGraphList.addVertex("D", "D");
+        adjacentGraphList.addVertex("A", "A", 1, 1);
+        adjacentGraphList.addVertex("B", "B", 1, 1);
+        adjacentGraphList.addVertex("C", "C", 1, 1);
+        adjacentGraphList.addVertex("D", "D", 1, 1);
 
         adjacentGraphList.addEdge("A", "B", 5);
         adjacentGraphList.addEdge("A", "C", 3);
@@ -266,11 +266,11 @@ public class GraphsTest {
     @Test
     public void verifyPrimMethod2(){
         setupStage2();
-        adjacentGraphList.addVertex("P", "P");
-        adjacentGraphList.addVertex("Q", "Q");
-        adjacentGraphList.addVertex("R", "R");
-        adjacentGraphList.addVertex("S", "S");
-        adjacentGraphList.addVertex("T", "T");
+        adjacentGraphList.addVertex("P", "P", 1, 1);
+        adjacentGraphList.addVertex("Q", "Q", 1, 1);
+        adjacentGraphList.addVertex("R", "R", 1, 1);
+        adjacentGraphList.addVertex("S", "S", 1, 1);
+        adjacentGraphList.addVertex("T", "T", 1, 1);
 
         adjacentGraphList.addEdge("P", "Q", 3);
         adjacentGraphList.addEdge("Q", "R", 8);
@@ -287,21 +287,21 @@ public class GraphsTest {
     @Test
     public void verifyPrimMethod3(){
         setupStage3();
-        adjacentGraphList.addVertex("A", "A");
-        adjacentGraphList.addVertex("B", "B");
-        adjacentGraphList.addVertex("C", "C");
-        adjacentGraphList.addVertex("D", "D");
-        adjacentGraphList.addVertex("E", "E");
-        adjacentGraphList.addVertex("F", "F");
-        adjacentGraphList.addVertex("G", "G");
-        adjacentGraphList.addVertex("H", "H");
-        adjacentGraphList.addVertex("I", "I");
-        adjacentGraphList.addVertex("J", "J");
-        adjacentGraphList.addVertex("K", "K");
-        adjacentGraphList.addVertex("L", "L");
-        adjacentGraphList.addVertex("M", "M");
-        adjacentGraphList.addVertex("N", "N");
-        adjacentGraphList.addVertex("O", "O");
+        adjacentGraphList.addVertex("A", "A", 1, 1);
+        adjacentGraphList.addVertex("B", "B", 1, 1);
+        adjacentGraphList.addVertex("C", "C", 1, 1);
+        adjacentGraphList.addVertex("D", "D", 1, 1);
+        adjacentGraphList.addVertex("E", "E", 1, 1);
+        adjacentGraphList.addVertex("F", "F", 1, 1);
+        adjacentGraphList.addVertex("G", "G", 1, 1);
+        adjacentGraphList.addVertex("H", "H", 1, 1);
+        adjacentGraphList.addVertex("I", "I", 1, 1);
+        adjacentGraphList.addVertex("J", "J", 1, 1);
+        adjacentGraphList.addVertex("K", "K", 1, 1);
+        adjacentGraphList.addVertex("L", "L", 1, 1);
+        adjacentGraphList.addVertex("M", "M", 1, 1);
+        adjacentGraphList.addVertex("N", "N", 1, 1);
+        adjacentGraphList.addVertex("O", "O", 1, 1);
 
 
         adjacentGraphList.addEdge("A", "B", 5);

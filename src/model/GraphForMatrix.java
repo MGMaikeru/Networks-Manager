@@ -73,7 +73,7 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
         return "Vertex does not exist";
     }
 
-    private int searchVertex(K key){
+    public int searchVertex(K key){
         int foundedVertexInx = -1;
         for (int i= 0; i<vertices.size(); i++){
             if (vertices.get(i).getKey().equals(key)){
