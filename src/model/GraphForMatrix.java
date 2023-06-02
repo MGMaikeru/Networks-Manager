@@ -22,6 +22,11 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
 
     }
 
+    /*public double calculateAttenuation(Vertex1<Node, String> initialNode, Vertex1<Node, String> destinationNode, double distance){
+        double frequency = (initialNode.getValue().getBandWith() + destinationNode.getValue().getBandWith())/2;
+        return 20*Math.log10(distance)+20*Math.log10(frequency)+20*Math.log10((4*Math.PI)/(3*Math.pow(10, 8)));
+    }*/
+
     @Override
     public void addVertex(K key, T value) {
         Vertex1<T, K> vertex = new Vertex1<T, K>(value, key);
