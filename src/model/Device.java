@@ -1,11 +1,11 @@
 package model;
 
-public class Node {
+public class Device {
     private String ipAddress;
     private double bandWith;
     private String name;
 
-    public Node(String ipAddress, double bandWith, String name) {
+    public Device(String ipAddress, double bandWith, String name) {
         this.ipAddress = ipAddress;
         this.bandWith = bandWith;
         this.name = name;
