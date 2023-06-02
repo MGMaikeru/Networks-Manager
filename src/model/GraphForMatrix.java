@@ -65,21 +65,24 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
         }
 
         if (srcIdx != -1 && destIdx != -1) {
+
             Vertex1<T, K> srcVertex = vertices.get(srcIdx);
             Vertex1<T, K> destVertex = vertices.get(destIdx);
 
+            if (srcVertex.searchAdjacent(destVertex)){
+                return "These vertices are already connected";
+            }
+
             srcVertex.addEdge(new Edge(srcVertex, destVertex, weight));
             adjMatrix[srcIdx][destIdx] = 1;
+            srcVertex.addAdjacent(destVertex, weight);
 
             if (isDirected) {
                 destVertex.addEdge(new Edge(destVertex, srcVertex, weight));
                 adjMatrix[destIdx][srcIdx] = 1;
+                destVertex.addAdjacent(srcVertex, weight);
             }
-            if (srcVertex.searchAdjacent(destVertex)){
-                return "These vertices are already connected";
-            }else {
-                return "Vertices successfully connected";
-            }
+            return "Vertices successfully connected";
         }
 
         return "Vertex does not exist";
@@ -201,6 +204,67 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
 
     @Override
     public String dijkstra(K startKey, K endKey) {
+        Vertex1<T, K> startVertex = vertices.get(searchVertex(startKey));
+        Vertex1<T, K> endVertex = vertices.get(searchVertex(endKey));
+
+        if (startVertex == null || endVertex == null) {
+            return "The start or end vertex does not exist in the graph.";
+        }
+
+        double[] distances = new double[vertices.size()];
+        Arrays.fill(distances, Double.MAX_VALUE);
+        distances[vertices.indexOf(startVertex)] = 0.0;
+
+        PriorityQueue<Vertex1<T,K>> queue = new PriorityQueue<>((v1, v2) -> (int) (distances[vertices.indexOf(v1)] - distances[vertices.indexOf(v2)]));
+        queue.add(startVertex);
+
+        while (!queue.isEmpty()) {
+            Vertex1<T, K> current = queue.poll();
+
+            if (current == endVertex) {
+                break;
+            }
+
+            for (Edge<K> edge : current.getEdges()) {
+                Vertex1<T,K> neighbor = edge.getDestinationVertex();
+                double weight = edge.getWeight();
+
+                double newDistance = distances[vertices.indexOf(current)] + weight;
+                if (newDistance < distances[vertices.indexOf(neighbor)]) {
+                    distances[vertices.indexOf(neighbor)] = newDistance;
+                    neighbor.setPredecessor(current);
+
+                    queue.remove(neighbor);
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        List<Vertex1<T, K>> path = new ArrayList<>();
+        Vertex1<T, K> currentVertex = endVertex;
+        while (currentVertex != null) {
+            path.add(0, currentVertex);
+            currentVertex = currentVertex.getPredecessor();
+        }
+
+        if (path.get(0) != startVertex) {
+            return "There is no path from  leading vertex " + startKey + " to " + endKey + ".";
+        }
+
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < path.size(); i++) {
+            Vertex1<T, K> vertex = path.get(i);
+            result.append(vertex.getKey());
+            if (i != path.size() - 1) {
+                result.append(" -> ");
+            }
+        }
+
+        return result.toString();
+    }
+
+    /*@Override
+    public String dijkstra(K startKey, K endKey) {
         int startIdx = searchVertex(startKey);
 
         if (startIdx == -1) {
@@ -241,10 +305,10 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
         }
 
         return result.toString();
-    }
+    }*/
 
 
-    @Override
+    /*@Override
     public String prim(K startKey) {
         int startIdx = searchVertex(startKey);
 
@@ -308,6 +372,51 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
         result.append("Total: ").append(totalCost);
 
         return result.toString();
+    }*/
+
+    @Override
+    public String prim(K startKey) {
+        Vertex1<T, K> startVertex = vertices.get(searchVertex(startKey));
+
+        if (startVertex == null) {
+            return "The start vertex does not exist in the graph.";
+        }
+
+        if (isDirected){
+            return "Prim Method does not apply on Directed Graph";
+        }else {
+            PriorityQueue<Edge<K>> queue = new PriorityQueue<>((e1, e2) -> (int) (e1.getWeight() - e2.getWeight()));
+            ArrayList<Vertex1<T, K>> visitedVertices = new ArrayList<>();
+            StringBuilder result = new StringBuilder();
+
+            visitedVertices.add(startVertex);
+
+            for (Edge<K> edge : startVertex.getEdges()) {
+                queue.add(edge);
+            }
+
+            while (!queue.isEmpty()) {
+                Edge<K> minEdge = queue.poll();
+                Vertex1<T, K> srcVertex = minEdge.getInitialVertex();
+                Vertex1<T, K> destVertex = minEdge.getDestinationVertex();
+
+                if (!visitedVertices.contains(destVertex)) {
+                    visitedVertices.add(destVertex);
+                    result.append(srcVertex.getKey()).append(" - ").append(destVertex.getKey()).append(", ");
+
+                    for (Edge<K> edge : destVertex.getEdges()) {
+                        if (!visitedVertices.contains(edge.getDestinationVertex())) {
+                            queue.add(edge);
+                        }
+                    }
+                }
+            }
+
+            if (visitedVertices.size() != vertices.size()) {
+                return  "The graph is not connected.";
+            }
+            return result.toString();
+        }
     }
 
     private int findMinKeyVertex(double[] key, boolean[] visited) {

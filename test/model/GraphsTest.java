@@ -9,22 +9,26 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GraphsTest {
-    private GraphList<String,String> adjacentGraphList;
+    //private GraphList<String,String> adjacentGraphList;
     private GraphForMatrix<String,String> matrixGraph;
+    private GraphForMatrix<String,String> adjacentGraphList;
 
     public void setupStage1(){
-        this.adjacentGraphList = new GraphList<>(false);
-        this.matrixGraph = new GraphForMatrix<>(false);
+        this.adjacentGraphList = new GraphForMatrix<>(false);
+        //this.adjacentGraphList = new GraphList<>(false);
+        //this.matrixGraph = new GraphForMatrix<>(false);
     }
 
     public void setupStage2(){
-        this.adjacentGraphList = new GraphList<>(true);
-        this.matrixGraph = new GraphForMatrix<>(true);
+        this.adjacentGraphList = new GraphForMatrix<>(true);
+        //this.adjacentGraphList = new GraphList<>(true);
+        //this.matrixGraph = new GraphForMatrix<>(true);
     }
 
     public void setupStage3(){
-        this.adjacentGraphList = new GraphList<>(false);
-        this.matrixGraph = new GraphForMatrix<>(false);
+        this.adjacentGraphList = new GraphForMatrix<>(false);
+        //this.adjacentGraphList = new GraphList<>(false);
+        //this.matrixGraph = new GraphForMatrix<>(false);
     }
 
     @Test
@@ -52,11 +56,11 @@ public class GraphsTest {
     public void verifyAddedVertex2(){
         setupStage1();
 
-        matrixGraph.addVertex("A", "A", 1, 1);
-        matrixGraph.addVertex("B", "B", 1, 1);
+        adjacentGraphList.addVertex("A", "A", 1, 1);
+        adjacentGraphList.addVertex("B", "B", 1, 1);
 
         Exception exception = assertThrows(RuntimeException.class, () -> {
-            matrixGraph.addVertex("", "C", 1, 1);
+            adjacentGraphList.addVertex("", "C", 1, 1);
         });
 
         String expectedMessage = "There can't be vertex with null key";
@@ -116,20 +120,20 @@ public class GraphsTest {
     @Test
     public void verifyBFSMethod1(){
         setupStage1();
-        matrixGraph.addVertex("A", "A", 1, 1);
-        matrixGraph.addVertex("B", "B", 1, 1);
-        matrixGraph.addVertex("C", "C", 1, 1);
-        matrixGraph.addVertex("D", "D", 1, 1);
-        matrixGraph.addVertex("E", "E", 1, 1);
+        adjacentGraphList.addVertex("A", "A", 1, 1);
+        adjacentGraphList.addVertex("B", "B", 1, 1);
+        adjacentGraphList.addVertex("C", "C", 1, 1);
+        adjacentGraphList.addVertex("D", "D", 1, 1);
+        adjacentGraphList.addVertex("E", "E", 1, 1);
 
-        matrixGraph.addEdge("A", "B", 1);
-        matrixGraph.addEdge("B", "C", 1);
-        matrixGraph.addEdge("C", "D", 1);
-        matrixGraph.addEdge("D", "E", 1);
+        adjacentGraphList.addEdge("A", "B", 1);
+        adjacentGraphList.addEdge("B", "C", 1);
+        adjacentGraphList.addEdge("C", "D", 1);
+        adjacentGraphList.addEdge("D", "E", 1);
 
         try {
-            System.out.println(matrixGraph.bfs("A"));
-            assertTrue(matrixGraph.bfs("A").contains("B"));
+            System.out.println(adjacentGraphList.bfs("A"));
+            assertTrue(adjacentGraphList.bfs("A").contains("B"));
             assertTrue(adjacentGraphList.bfs("A").contains("C"));
             assertTrue(adjacentGraphList.bfs("A").contains("D"));
             assertTrue(adjacentGraphList.bfs("A").contains("E"));
