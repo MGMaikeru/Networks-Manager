@@ -276,8 +276,7 @@ public class GraphsTest {
         adjacentGraphList.addEdge("T", "R", 7);
 
 
-        String expected = "The graph is not connected.";//A pesar de que lo pase, no esta bien
-        //Tambien hay que cambiar el prim para agregar esta excepción UnsupportedOperationException
+        String expected = "Prim Method does not apply on Directed Graph";
         String result = adjacentGraphList.prim("R");
 
         assertEquals(expected, result);
@@ -285,24 +284,43 @@ public class GraphsTest {
 
     @Test
     public void verifyPrimMethod3(){
-        setupStage1();
-        adjacentGraphList.addVertex("P", "P");
-        adjacentGraphList.addVertex("Q", "Q");
-        adjacentGraphList.addVertex("R", "R");
-        adjacentGraphList.addVertex("S", "S");
-        adjacentGraphList.addVertex("T", "T");
-        adjacentGraphList.addVertex("U", "U");
+        setupStage3();
+        adjacentGraphList.addVertex("A", "A");
+        adjacentGraphList.addVertex("B", "B");
+        adjacentGraphList.addVertex("C", "C");
+        adjacentGraphList.addVertex("D", "D");
+        adjacentGraphList.addVertex("E", "E");
+        adjacentGraphList.addVertex("F", "F");
+        adjacentGraphList.addVertex("G", "G");
+        adjacentGraphList.addVertex("H", "H");
+        adjacentGraphList.addVertex("I", "I");
+        adjacentGraphList.addVertex("J", "J");
+        adjacentGraphList.addVertex("K", "K");
+        adjacentGraphList.addVertex("L", "L");
+        adjacentGraphList.addVertex("M", "M");
+        adjacentGraphList.addVertex("N", "N");
+        adjacentGraphList.addVertex("O", "O");
 
-        adjacentGraphList.addEdge("P", "Q", 4);
-        adjacentGraphList.addEdge("Q", "R", 3);
-        adjacentGraphList.addEdge("R", "S", 2);
-        adjacentGraphList.addEdge("S", "T", 6);
-        adjacentGraphList.addEdge("U", "T", 4);
-        adjacentGraphList.addEdge("S", "S", 5);
+
+        adjacentGraphList.addEdge("A", "B", 5);
+        adjacentGraphList.addEdge("A", "C", 2);
+        adjacentGraphList.addEdge("B", "D", 4);
+        adjacentGraphList.addEdge("B", "E", 3);
+        adjacentGraphList.addEdge("C", "F", 6);
+        adjacentGraphList.addEdge("C", "G", 1);
+        adjacentGraphList.addEdge("D", "H", 8);
+        adjacentGraphList.addEdge("D", "I", 9);
+        adjacentGraphList.addEdge("E", "J", 7);
+        adjacentGraphList.addEdge("E", "K", 6);
+        adjacentGraphList.addEdge("F", "L", 3);
+        adjacentGraphList.addEdge("G", "M", 5);
+        adjacentGraphList.addEdge("H", "N", 2);
+        adjacentGraphList.addEdge("I", "O", 4);
+        adjacentGraphList.addEdge("J", "K", 2);
 
 
-        String expected = "R - S, S - T, T U - T, Q - R, ";
-        String result = adjacentGraphList.prim("R");
+        String expected = "C - G, C - A, A - B, B - E, B - D, G - M, E - K, K - J, C - F, F - L, D - H, H - N, D - I, I - O, ";
+        String result = adjacentGraphList.prim("C");
 
         assertEquals(expected, result);
     }

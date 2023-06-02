@@ -63,6 +63,10 @@ public class GraphList<T extends Comparable<T>,K extends Comparable <K>> extends
         int srcIndex = searchVertex(srcKey);
         int destIndex = searchVertex(destKey);
 
+        if (srcIndex == destIndex){
+            return "You cannot add a loop in an undirected graph!";
+        }
+
         if (srcIndex == -1 || destIndex == -1) {
             return "One or both vertices do not exist";
         }
@@ -193,38 +197,41 @@ public class GraphList<T extends Comparable<T>,K extends Comparable <K>> extends
             return "The start vertex does not exist in the graph.";
         }
 
-        PriorityQueue<Edge<T>> queue = new PriorityQueue<>((e1, e2) -> (int) (e1.getWeight() - e2.getWeight()));
-        ArrayList<Vertex1<T, K>> visitedVertices = new ArrayList<>();
-        StringBuilder result = new StringBuilder();
+        if (isDirected){
+            return "Prim Method does not apply on Directed Graph";
+        }else {
+            PriorityQueue<Edge<T>> queue = new PriorityQueue<>((e1, e2) -> (int) (e1.getWeight() - e2.getWeight()));
+            ArrayList<Vertex1<T, K>> visitedVertices = new ArrayList<>();
+            StringBuilder result = new StringBuilder();
 
-        visitedVertices.add(startVertex);
+            visitedVertices.add(startVertex);
 
-        for (Edge<T> edge : startVertex.getEdges()) {
-            queue.add(edge);
-        }
+            for (Edge<T> edge : startVertex.getEdges()) {
+                queue.add(edge);
+            }
 
-        while (!queue.isEmpty()) {
-            Edge<T> minEdge = queue.poll();
-            Vertex1<T, K> srcVertex = minEdge.getInitialVertex();
-            Vertex1<T, K> destVertex = minEdge.getDestinationVertex();
+            while (!queue.isEmpty()) {
+                Edge<T> minEdge = queue.poll();
+                Vertex1<T, K> srcVertex = minEdge.getInitialVertex();
+                Vertex1<T, K> destVertex = minEdge.getDestinationVertex();
 
-            if (!visitedVertices.contains(destVertex)) {
-                visitedVertices.add(destVertex);
-                result.append(srcVertex.getKey()).append(" - ").append(destVertex.getKey()).append(", ");
+                if (!visitedVertices.contains(destVertex)) {
+                    visitedVertices.add(destVertex);
+                    result.append(srcVertex.getKey()).append(" - ").append(destVertex.getKey()).append(", ");
 
-                for (Edge<T> edge : destVertex.getEdges()) {
-                    if (!visitedVertices.contains(edge.getDestinationVertex())) {
-                        queue.add(edge);
+                    for (Edge<T> edge : destVertex.getEdges()) {
+                        if (!visitedVertices.contains(edge.getDestinationVertex())) {
+                            queue.add(edge);
+                        }
                     }
                 }
             }
-        }
 
-        if (visitedVertices.size() != vertices.size()) {
-            return  "The graph is not connected.";
+            if (visitedVertices.size() != vertices.size()) {
+                return  "The graph is not connected.";
+            }
+            return result.toString();
         }
-
-        return result.toString();
     }
 
     public boolean searchSpecificAdjacent(K value1, K value2){
