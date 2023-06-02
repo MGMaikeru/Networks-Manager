@@ -116,20 +116,20 @@ public class GraphsTest {
     @Test
     public void verifyBFSMethod1(){
         setupStage1();
-        adjacentGraphList.addVertex("A", "A", 1, 1);
-        adjacentGraphList.addVertex("B", "B", 1, 1);
-        adjacentGraphList.addVertex("C", "C", 1, 1);
-        adjacentGraphList.addVertex("D", "D", 1, 1);
-        adjacentGraphList.addVertex("E", "E", 1, 1);
+        matrixGraph.addVertex("A", "A", 1, 1);
+        matrixGraph.addVertex("B", "B", 1, 1);
+        matrixGraph.addVertex("C", "C", 1, 1);
+        matrixGraph.addVertex("D", "D", 1, 1);
+        matrixGraph.addVertex("E", "E", 1, 1);
 
-        adjacentGraphList.addEdge("A", "B", 1);
-        adjacentGraphList.addEdge("B", "C", 1);
-        adjacentGraphList.addEdge("C", "D", 1);
-        adjacentGraphList.addEdge("D", "E", 1);
+        matrixGraph.addEdge("A", "B", 1);
+        matrixGraph.addEdge("B", "C", 1);
+        matrixGraph.addEdge("C", "D", 1);
+        matrixGraph.addEdge("D", "E", 1);
 
         try {
-            System.out.println(adjacentGraphList.bfs("A"));
-            assertTrue(adjacentGraphList.bfs("A").contains("B"));
+            System.out.println(matrixGraph.bfs("A"));
+            assertTrue(matrixGraph.bfs("A").contains("B"));
             assertTrue(adjacentGraphList.bfs("A").contains("C"));
             assertTrue(adjacentGraphList.bfs("A").contains("D"));
             assertTrue(adjacentGraphList.bfs("A").contains("E"));
