@@ -202,7 +202,7 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
         return msg;
     }
 
-    @Override
+    /*@Override
     public String dijkstra(K startKey, K endKey) {
         Vertex1<T, K> startVertex = vertices.get(searchVertex(startKey));
         Vertex1<T, K> endVertex = vertices.get(searchVertex(endKey));
@@ -261,9 +261,9 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
         }
 
         return result.toString();
-    }
+    }*/
 
-    /*@Override
+    @Override
     public String dijkstra(K startKey, K endKey) {
         int startIdx = searchVertex(startKey);
 
@@ -305,10 +305,10 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
         }
 
         return result.toString();
-    }*/
+    }
 
 
-    /*@Override
+    @Override
     public String prim(K startKey) {
         int startIdx = searchVertex(startKey);
 
@@ -372,9 +372,9 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
         result.append("Total: ").append(totalCost);
 
         return result.toString();
-    }*/
+    }
 
-    @Override
+    /*@Override
     public String prim(K startKey) {
         Vertex1<T, K> startVertex = vertices.get(searchVertex(startKey));
 
@@ -417,7 +417,7 @@ public class GraphForMatrix <T, K extends Comparable<K>> extends Graph<T, K> {
             }
             return result.toString();
         }
-    }
+    }*/
 
     private int findMinKeyVertex(double[] key, boolean[] visited) {
         double minKey = Integer.MAX_VALUE;

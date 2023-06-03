@@ -9,26 +9,22 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GraphsTest {
-    //private GraphList<String,String> adjacentGraphList;
+    private GraphList<String,String> adjacentGraphList;
     private GraphForMatrix<String,String> matrixGraph;
-    private GraphForMatrix<String,String> adjacentGraphList;
 
     public void setupStage1(){
-        this.adjacentGraphList = new GraphForMatrix<>(false);
-        //this.adjacentGraphList = new GraphList<>(false);
-        //this.matrixGraph = new GraphForMatrix<>(false);
+        this.adjacentGraphList = new GraphList<>(false);
+        this.matrixGraph = new GraphForMatrix<>(false);
     }
 
     public void setupStage2(){
-        this.adjacentGraphList = new GraphForMatrix<>(true);
-        //this.adjacentGraphList = new GraphList<>(true);
-        //this.matrixGraph = new GraphForMatrix<>(true);
+        this.adjacentGraphList = new GraphList<>(true);
+        this.matrixGraph = new GraphForMatrix<>(true);
     }
 
     public void setupStage3(){
-        this.adjacentGraphList = new GraphForMatrix<>(false);
-        //this.adjacentGraphList = new GraphList<>(false);
-        //this.matrixGraph = new GraphForMatrix<>(false);
+        this.adjacentGraphList = new GraphList<>(false);
+        this.matrixGraph = new GraphForMatrix<>(false);
     }
 
     @Test

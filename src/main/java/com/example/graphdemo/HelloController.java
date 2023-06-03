@@ -75,6 +75,8 @@ public class HelloController implements Initializable {
         keyTF.setText(null);
         nameTF.setText(null);
         bandTF.setText(null);
+        KEYTF.setText(null);
+        KEY2TF.setText(null);
         graph = new GraphForMatrix<>(false);
         canvas.setOnMousePressed(this::onMousePressed);
     }
@@ -98,6 +100,8 @@ public class HelloController implements Initializable {
             alert.setContentText("Invalid key/s");
             alert.showAndWait();
         }
+        KEYTF.setText(null);
+        KEY2TF.setText(null);
     }
     @FXML
     void dijkstra(ActionEvent event) {

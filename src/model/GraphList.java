@@ -2,7 +2,7 @@ package model;
 import exception.EmptyFieldException;
 import java.util.*;
 
-public class GraphList<T extends Comparable<T>,K extends Comparable <K>> extends Graph<T,K> {
+public class GraphList<T,K extends Comparable <K>> extends Graph<T,K> {
     private final ArrayList<Vertex1> vertices;
     private final boolean isDirected;
     private int time;
@@ -34,7 +34,7 @@ public class GraphList<T extends Comparable<T>,K extends Comparable <K>> extends
         return  this.vertices;
     }
 
-    private int searchVertex(K key) {
+    public int searchVertex(K key) {
         int foundedVertexInx = -1;
         for (int i= 0; i<vertices.size(); i++){
             if (vertices.get(i).getKey().equals(key)){
@@ -78,12 +78,12 @@ public class GraphList<T extends Comparable<T>,K extends Comparable <K>> extends
             return "These vertices are already connected";
         }
 
-        Edge<T> edge = new Edge<>(srcVertex, destVertex, weight);
+        Edge<K> edge = new Edge<>(srcVertex, destVertex, weight);
         srcVertex.addEdge(edge);
         srcVertex.addAdjacent(destVertex, weight);
 
         if (!isDirected) {
-            Edge<T> reverseEdge = new Edge<>(destVertex, srcVertex, weight);
+            Edge<K> reverseEdge = new Edge<>(destVertex, srcVertex, weight);
             destVertex.addEdge(reverseEdge);
             destVertex.addAdjacent(srcVertex, weight);
         }
@@ -151,7 +151,7 @@ public class GraphList<T extends Comparable<T>,K extends Comparable <K>> extends
                 break;
             }
 
-            for (Edge<T> edge : current.getEdges()) {
+            for (Edge<K> edge : current.getEdges()) {
                 Vertex1<T,K> neighbor = edge.getDestinationVertex();
                 double weight = edge.getWeight();
 
@@ -200,18 +200,18 @@ public class GraphList<T extends Comparable<T>,K extends Comparable <K>> extends
         if (isDirected){
             return "Prim Method does not apply on Directed Graph";
         }else {
-            PriorityQueue<Edge<T>> queue = new PriorityQueue<>((e1, e2) -> (int) (e1.getWeight() - e2.getWeight()));
+            PriorityQueue<Edge<K>> queue = new PriorityQueue<>((e1, e2) -> (int) (e1.getWeight() - e2.getWeight()));
             ArrayList<Vertex1<T, K>> visitedVertices = new ArrayList<>();
             StringBuilder result = new StringBuilder();
 
             visitedVertices.add(startVertex);
 
-            for (Edge<T> edge : startVertex.getEdges()) {
+            for (Edge<K> edge : startVertex.getEdges()) {
                 queue.add(edge);
             }
 
             while (!queue.isEmpty()) {
-                Edge<T> minEdge = queue.poll();
+                Edge<K> minEdge = queue.poll();
                 Vertex1<T, K> srcVertex = minEdge.getInitialVertex();
                 Vertex1<T, K> destVertex = minEdge.getDestinationVertex();
 
@@ -219,7 +219,7 @@ public class GraphList<T extends Comparable<T>,K extends Comparable <K>> extends
                     visitedVertices.add(destVertex);
                     result.append(srcVertex.getKey()).append(" - ").append(destVertex.getKey()).append(", ");
 
-                    for (Edge<T> edge : destVertex.getEdges()) {
+                    for (Edge<K> edge : destVertex.getEdges()) {
                         if (!visitedVertices.contains(edge.getDestinationVertex())) {
                             queue.add(edge);
                         }
